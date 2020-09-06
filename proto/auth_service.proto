@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package auth_service;
+
+import "google/protobuf/empty.proto";
+
+message User {
+  string user_id = 1;
+  string user_email = 2;
+  string user_password = 3;
+  string user_f_name = 4;
+  string user_l_name = 5;
+  int64 user_gender = 6;
+  string user_photo = 7;
+  int64 user_balance = 8;
+  int64 user_level = 9;
+  int64 user_status = 10;
+}
+
+message Gender {
+  int64 gender_id = 1;
+  string gender_name = 2;
+  int64 gender_status = 3;
+}
+
+message Level {
+  int64 level_id = 1;
+  string level_name = 2;
+  int64 level_status = 3;
+}
+
+message UserList {
+  repeated User list = 1;
+}
+
+message GenderList {
+  repeated Gender list = 1;
+}
+
+message LevelList {
+  repeated Level list = 1;
+}
+
+message ID {
+  string id = 1;
+}
+
+message UserUpdateRequest {
+  ID id = 1;
+  User user = 2;
+}
+
+message GenderUpdateRequest {
+  ID id = 1;
+  Gender gender = 2;
+}
+
+message LevelUpdateRequest {
+  ID id = 1;
+  Level level = 2;
+}
+
+service UserCRUD {
+  rpc GetAll(google.protobuf.Empty) returns (UserList);
+  rpc GetByID(ID) returns (User);
+  rpc Create(User) returns (google.protobuf.Empty);
+  rpc Update(UserUpdateRequest) returns (google.protobuf.Empty);
+  rpc Delete(ID) returns (google.protobuf.Empty);
+}
+
+service GenderCRUD {
+  rpc GetAll(google.protobuf.Empty) returns (GenderList);
+  rpc GetByID(ID) returns (Gender);
+  rpc Create(Gender) returns (google.protobuf.Empty);
+  rpc Update(GenderUpdateRequest) returns (google.protobuf.Empty);
+  rpc Delete(ID) returns (google.protobuf.Empty);
+}
+
+service LevelCRUD {
+  rpc GetAll(google.protobuf.Empty) returns (LevelList);
+  rpc GetByID(ID) returns (Level);
+  rpc Create(Level) returns (google.protobuf.Empty);
+  rpc Update(LevelUpdateRequest) returns (google.protobuf.Empty);
+  rpc Delete(ID) returns (google.protobuf.Empty);
+}
