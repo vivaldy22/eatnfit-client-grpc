@@ -2,7 +2,6 @@ package routes
 
 import (
 	"context"
-	"fmt"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/gorilla/mux"
 	auth_service "github.com/vivaldy22/eatnfit-client/proto"
@@ -17,7 +16,6 @@ type levelRoute struct {
 
 func NewLevelRoute(service auth_service.LevelCRUDClient, r *mux.Router) {
 	handler := &levelRoute{service: service}
-	fmt.Println("MASUK LEVEL ROUTE")
 
 	r.HandleFunc("/levels", handler.getAll).Methods(http.MethodGet)
 }

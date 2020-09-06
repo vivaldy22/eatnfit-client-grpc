@@ -6,6 +6,6 @@ import (
 
 func main() {
 	r := config.NewRouter()
-	config.RunServer(r)
 	config.InitRouters(r)
+	config.RunServer(r)
 }

@@ -25,9 +25,6 @@ func RunServer(r *mux.Router) {
 
 func InitRouters(r *mux.Router) {
 	r.Use(middleware.ActivityLogMiddleware)
-	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello World"))
-	})
 
 	levelClient := newLevelClient()
 	routes.NewLevelRoute(levelClient, r)
