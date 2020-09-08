@@ -34,7 +34,7 @@ func (l *userRoute) getAll(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		vError.WriteError("Get All Users Data failed!", http.StatusBadRequest, err, w)
 	} else {
-		respJson.WriteJSON(data, w)
+		respJson.WriteJSON(data.List, w)
 	}
 }
 
