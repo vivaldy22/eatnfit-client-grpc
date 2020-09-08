@@ -4,6 +4,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/vivaldy22/eatnfit-client/tools/jwtm"
+
 	"github.com/gorilla/mux"
 	"github.com/vivaldy22/eatnfit-client/middleware"
 	"github.com/vivaldy22/eatnfit-client/routes"
@@ -25,11 +27,16 @@ func RunServer(r *mux.Router) {
 }
 
 func InitRouters(r *mux.Router) {
+	hmacSampleSecret := viper.ViperGetEnv("HMACSAMPLESECRET", "secret")
+	jwtmiddleware := jwtm.NewJWTMiddleware(hmacSampleSecret)
 	r.Use(middleware.ActivityLogMiddleware)
 
-	levelClient := newLevelClient()
-	routes.NewLevelRoute(levelClient, r)
+	admin := r.PathPrefix("/admin").Subrouter()
+	admin.Use(jwtmiddleware.Handler)
 
 	tokenClient := newTokenClient()
 	routes.NewTokenRoute(tokenClient, r)
+
+	levelClient := newLevelClient()
+	routes.NewLevelRoute(levelClient, admin)
 }

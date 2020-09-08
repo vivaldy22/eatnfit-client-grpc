@@ -3,6 +3,8 @@ module github.com/vivaldy22/eatnfit-client
 go 1.14
 
 require (
+	github.com/auth0/go-jwt-middleware v0.0.0-20200810150920-a32d7af194d1
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/golang/protobuf v1.4.2
 	github.com/gorilla/mux v1.8.0
 	github.com/spf13/viper v1.7.1
