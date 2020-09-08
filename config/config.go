@@ -35,8 +35,9 @@ func InitRouters(r *mux.Router) {
 	admin.Use(jwtmiddleware.Handler)
 
 	tokenClient := newTokenClient()
-	routes.NewTokenRoute(tokenClient, r)
-
+	userClient := newUserClient()
 	levelClient := newLevelClient()
+
+	routes.NewTokenRoute(tokenClient, userClient, r)
 	routes.NewLevelRoute(levelClient, admin)
 }

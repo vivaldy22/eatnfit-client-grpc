@@ -45,6 +45,27 @@ message ID {
   string id = 1;
 }
 
+message Email {
+  string email = 1;
+}
+
+message UserResponse {
+  string user_id = 1;
+  string user_email = 2;
+  string user_password = 3;
+  string user_f_name = 4;
+  string user_l_name = 5;
+  string user_gender = 6;
+  string user_photo = 7;
+  int64 user_balance = 8;
+  string user_level = 9;
+  int64 user_status = 10;
+}
+
+message UserListResponse {
+  repeated UserResponse list = 1;
+}
+
 message UserUpdateRequest {
   ID id = 1;
   User user = 2;
@@ -70,8 +91,9 @@ message Token {
 }
 
 service UserCRUD {
-  rpc GetAll(google.protobuf.Empty) returns (UserList);
+  rpc GetAll(google.protobuf.Empty) returns (UserListResponse);
   rpc GetByID(ID) returns (User);
+  rpc GetByEmail(Email) returns (User);
   rpc Create(User) returns (google.protobuf.Empty);
   rpc Update(UserUpdateRequest) returns (google.protobuf.Empty);
   rpc Delete(ID) returns (google.protobuf.Empty);
