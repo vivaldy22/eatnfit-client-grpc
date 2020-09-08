@@ -25,7 +25,7 @@ func NewTokenRoute(service auth_service.JWTTokenClient, userService auth_service
 	}
 
 	prefix := r.PathPrefix("/auth").Subrouter()
-	prefix.HandleFunc("", handler.login).Methods(http.MethodPost)
+	prefix.HandleFunc("/login", handler.login).Methods(http.MethodPost)
 	prefix.HandleFunc("/register", handler.register).Methods(http.MethodPost)
 }
 
@@ -60,12 +60,15 @@ func (t *authService) login(w http.ResponseWriter, r *http.Request) {
 
 func (t *authService) register(w http.ResponseWriter, r *http.Request) {
 	var user *auth_service.User
-	err := json.NewDecoder(r.Body).Decode(user)
+	err := json.NewDecoder(r.Body).Decode(&user)
 
 	if err != nil {
 		vError.WriteError("Decoding json failed!", http.StatusExpectationFailed, err, w)
 	} else {
-		_, err := t.userService.Create(context.Background(), user)
+		hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(user.UserPassword), bcrypt.DefaultCost)
+		user.UserPassword = string(hashedPassword)
+
+		_, err = t.userService.Create(context.Background(), user)
 
 		if err != nil {
 			vError.WriteError("Registering failed", http.StatusBadRequest, err, w)

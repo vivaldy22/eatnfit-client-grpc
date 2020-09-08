@@ -46,13 +46,13 @@ func (l *levelRoute) create(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		vError.WriteError("Decoding json failed!", http.StatusExpectationFailed, err, w)
 	} else {
-		_, err = l.service.Create(context.Background(), level)
+		created, err := l.service.Create(context.Background(), level)
 
 		if err != nil {
 			vError.WriteError("Create Level Failed!", http.StatusBadRequest, err, w)
 		} else {
 			data, err := l.service.GetByID(context.Background(), &auth_service.ID{
-				Id: strconv.Itoa(int(level.LevelId)),
+				Id: created.LevelId,
 			})
 
 			if err != nil {
@@ -76,7 +76,7 @@ func (l *levelRoute) getByID(w http.ResponseWriter, r *http.Request) {
 		})
 
 		if err != nil {
-			vError.WriteError("Get Login By ID failed!", http.StatusBadRequest, err, w)
+			vError.WriteError("Get Level By ID failed!", http.StatusBadRequest, err, w)
 		} else {
 			respJson.WriteJSON(data, w)
 		}

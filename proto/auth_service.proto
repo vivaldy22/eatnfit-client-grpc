@@ -10,23 +10,23 @@ message User {
   string user_password = 3;
   string user_f_name = 4;
   string user_l_name = 5;
-  int64 user_gender = 6;
+  string user_gender = 6;
   string user_photo = 7;
-  int64 user_balance = 8;
-  int64 user_level = 9;
-  int64 user_status = 10;
+  string user_balance = 8;
+  string user_level = 9;
+  string user_status = 10;
 }
 
 message Gender {
-  int64 gender_id = 1;
+  string gender_id = 1;
   string gender_name = 2;
-  int64 gender_status = 3;
+  string gender_status = 3;
 }
 
 message Level {
-  int64 level_id = 1;
+  string level_id = 1;
   string level_name = 2;
-  int64 level_status = 3;
+  string level_status = 3;
 }
 
 message UserList {
@@ -47,23 +47,6 @@ message ID {
 
 message Email {
   string email = 1;
-}
-
-message UserResponse {
-  string user_id = 1;
-  string user_email = 2;
-  string user_password = 3;
-  string user_f_name = 4;
-  string user_l_name = 5;
-  string user_gender = 6;
-  string user_photo = 7;
-  int64 user_balance = 8;
-  string user_level = 9;
-  int64 user_status = 10;
-}
-
-message UserListResponse {
-  repeated UserResponse list = 1;
 }
 
 message UserUpdateRequest {
@@ -91,27 +74,27 @@ message Token {
 }
 
 service UserCRUD {
-  rpc GetAll(google.protobuf.Empty) returns (UserListResponse);
+  rpc GetAll(google.protobuf.Empty) returns (UserList);
   rpc GetByID(ID) returns (User);
   rpc GetByEmail(Email) returns (User);
-  rpc Create(User) returns (google.protobuf.Empty);
-  rpc Update(UserUpdateRequest) returns (google.protobuf.Empty);
+  rpc Create(User) returns (User);
+  rpc Update(UserUpdateRequest) returns (User);
   rpc Delete(ID) returns (google.protobuf.Empty);
 }
 
 service GenderCRUD {
   rpc GetAll(google.protobuf.Empty) returns (GenderList);
   rpc GetByID(ID) returns (Gender);
-  rpc Create(Gender) returns (google.protobuf.Empty);
-  rpc Update(GenderUpdateRequest) returns (google.protobuf.Empty);
+  rpc Create(Gender) returns (Gender);
+  rpc Update(GenderUpdateRequest) returns (Gender);
   rpc Delete(ID) returns (google.protobuf.Empty);
 }
 
 service LevelCRUD {
   rpc GetAll(google.protobuf.Empty) returns (LevelList);
   rpc GetByID(ID) returns (Level);
-  rpc Create(Level) returns (google.protobuf.Empty);
-  rpc Update(LevelUpdateRequest) returns (google.protobuf.Empty);
+  rpc Create(Level) returns (Level);
+  rpc Update(LevelUpdateRequest) returns (Level);
   rpc Delete(ID) returns (google.protobuf.Empty);
 }
 
