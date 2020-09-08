@@ -21,8 +21,8 @@ type levelRoute struct {
 func NewLevelRoute(service auth_service.LevelCRUDClient, r *mux.Router) {
 	handler := &levelRoute{service: service}
 
-	r.HandleFunc("/levels", handler.getAll).Methods(http.MethodGet)
-	prefix := r.PathPrefix("/level").Subrouter()
+	prefix := r.PathPrefix("/levels").Subrouter()
+	prefix.HandleFunc("", handler.getAll).Methods(http.MethodGet)
 	prefix.HandleFunc("", handler.create).Methods(http.MethodPost)
 	prefix.HandleFunc("/{id}", handler.getByID).Methods(http.MethodGet)
 	prefix.HandleFunc("/{id}", handler.update).Methods(http.MethodPut)

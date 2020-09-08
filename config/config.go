@@ -40,4 +40,5 @@ func InitRouters(r *mux.Router) {
 
 	routes.NewTokenRoute(tokenClient, userClient, r)
 	routes.NewLevelRoute(levelClient, admin)
+	routes.NewUserRoute(userClient, admin)
 }

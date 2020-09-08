@@ -17,12 +17,6 @@ message User {
   string user_status = 10;
 }
 
-message Gender {
-  string gender_id = 1;
-  string gender_name = 2;
-  string gender_status = 3;
-}
-
 message Level {
   string level_id = 1;
   string level_name = 2;
@@ -31,10 +25,6 @@ message Level {
 
 message UserList {
   repeated User list = 1;
-}
-
-message GenderList {
-  repeated Gender list = 1;
 }
 
 message LevelList {
@@ -54,11 +44,6 @@ message UserUpdateRequest {
   User user = 2;
 }
 
-message GenderUpdateRequest {
-  ID id = 1;
-  Gender gender = 2;
-}
-
 message LevelUpdateRequest {
   ID id = 1;
   Level level = 2;
@@ -73,20 +58,17 @@ message Token {
   string token = 1;
 }
 
+message LoginResponse {
+  User user = 1;
+  string token = 2;
+}
+
 service UserCRUD {
   rpc GetAll(google.protobuf.Empty) returns (UserList);
   rpc GetByID(ID) returns (User);
   rpc GetByEmail(Email) returns (User);
   rpc Create(User) returns (User);
   rpc Update(UserUpdateRequest) returns (User);
-  rpc Delete(ID) returns (google.protobuf.Empty);
-}
-
-service GenderCRUD {
-  rpc GetAll(google.protobuf.Empty) returns (GenderList);
-  rpc GetByID(ID) returns (Gender);
-  rpc Create(Gender) returns (Gender);
-  rpc Update(GenderUpdateRequest) returns (Gender);
   rpc Delete(ID) returns (google.protobuf.Empty);
 }
 

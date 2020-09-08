@@ -3,6 +3,7 @@ package routes
 import (
 	"context"
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"golang.org/x/crypto/bcrypt"
@@ -49,7 +50,10 @@ func (t *authService) login(w http.ResponseWriter, r *http.Request) {
 				if err != nil {
 					vError.WriteError("Token generation failed!", http.StatusInternalServerError, err, w)
 				} else {
-					respJson.WriteJSON(token, w)
+					respJson.WriteJSON(&auth_service.LoginResponse{
+						User:  data,
+						Token: token.Token,
+					}, w)
 				}
 			} else {
 				vError.WriteError("Invalid login", http.StatusUnauthorized, err, w)
@@ -67,13 +71,14 @@ func (t *authService) register(w http.ResponseWriter, r *http.Request) {
 	} else {
 		hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(user.UserPassword), bcrypt.DefaultCost)
 		user.UserPassword = string(hashedPassword)
+		log.Println(user.UserPassword)
 
-		_, err = t.userService.Create(context.Background(), user)
+		res, err := t.userService.Create(context.Background(), user)
 
 		if err != nil {
 			vError.WriteError("Registering failed", http.StatusBadRequest, err, w)
 		} else {
-			data, err := t.userService.GetByID(context.Background(), &auth_service.ID{Id: user.UserId})
+			data, err := t.userService.GetByID(context.Background(), &auth_service.ID{Id: res.UserId})
 
 			if err != nil {
 				vError.WriteError("Get By ID User failed", http.StatusBadRequest, err, w)
