@@ -60,6 +60,15 @@ message LevelUpdateRequest {
   Level level = 2;
 }
 
+message LoginCredentials {
+  string user_email = 1;
+  string user_password = 2;
+}
+
+message Token {
+  string token = 1;
+}
+
 service UserCRUD {
   rpc GetAll(google.protobuf.Empty) returns (UserList);
   rpc GetByID(ID) returns (User);
@@ -82,4 +91,8 @@ service LevelCRUD {
   rpc Create(Level) returns (google.protobuf.Empty);
   rpc Update(LevelUpdateRequest) returns (google.protobuf.Empty);
   rpc Delete(ID) returns (google.protobuf.Empty);
+}
+
+service JWTToken {
+  rpc GenerateToken(LoginCredentials) returns (Token);
 }

@@ -5,7 +5,9 @@ import (
 	"net/http"
 )
 
-func WriteError(message string, err error, w *http.ResponseWriter) {
-	(*w).Write([]byte(message))
+func WriteError(message string, statusCode int, err error, w http.ResponseWriter) {
+	//w.WriteHeader(statusCode)
+	//w.Write([]byte(message))
+	http.Error(w, message, statusCode)
 	log.Println(err)
 }
