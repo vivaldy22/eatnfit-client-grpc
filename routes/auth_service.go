@@ -3,7 +3,6 @@ package routes
 import (
 	"context"
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"golang.org/x/crypto/bcrypt"
@@ -71,7 +70,6 @@ func (t *authService) register(w http.ResponseWriter, r *http.Request) {
 	} else {
 		hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(user.UserPassword), bcrypt.DefaultCost)
 		user.UserPassword = string(hashedPassword)
-		log.Println(user.UserPassword)
 
 		res, err := t.userService.Create(context.Background(), user)
 

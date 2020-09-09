@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/gorilla/mux"
 	auth_service "github.com/vivaldy22/eatnfit-client/proto"
@@ -40,13 +42,15 @@ func (l *userRoute) getAll(w http.ResponseWriter, r *http.Request) {
 }
 
 func (l *userRoute) create(w http.ResponseWriter, r *http.Request) {
-	var level *auth_service.User
-	err := json.NewDecoder(r.Body).Decode(&level)
+	var user *auth_service.User
+	err := json.NewDecoder(r.Body).Decode(&user)
 
 	if err != nil {
 		vError.WriteError("Decoding json failed!", http.StatusExpectationFailed, err, w)
 	} else {
-		created, err := l.service.Create(context.Background(), level)
+		hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(user.UserPassword), bcrypt.DefaultCost)
+		user.UserPassword = string(hashedPassword)
+		created, err := l.service.Create(context.Background(), user)
 
 		if err != nil {
 			vError.WriteError("Create User Failed!", http.StatusBadRequest, err, w)
