@@ -19,7 +19,7 @@ type authService struct {
 	userService auth_service.UserCRUDClient
 }
 
-func NewTokenRoute(service auth_service.JWTTokenClient, userService auth_service.UserCRUDClient, r *mux.Router) {
+func NewAuthRoute(service auth_service.JWTTokenClient, userService auth_service.UserCRUDClient, r *mux.Router) {
 	handler := &authService{
 		service:     service,
 		userService: userService,

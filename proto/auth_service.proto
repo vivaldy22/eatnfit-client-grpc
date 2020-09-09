@@ -11,10 +11,9 @@ message User {
   string user_f_name = 4;
   string user_l_name = 5;
   string user_gender = 6;
-  string user_photo = 7;
-  string user_balance = 8;
-  string user_level = 9;
-  string user_status = 10;
+  string user_balance = 7;
+  string user_level = 8;
+  string user_status = 9;
 }
 
 message Level {

@@ -19,7 +19,7 @@ func newLevelClient() authservice.LevelCRUDClient {
 	return authservice.NewLevelCRUDClient(conn)
 }
 
-func newTokenClient() authservice.JWTTokenClient {
+func newAuthClient() authservice.JWTTokenClient {
 	host := viper.ViperGetEnv("GRPC_AUTH_HOST", "localhost")
 	port := viper.ViperGetEnv("GRPC_AUTH_PORT", "1010")
 	conn, err := grpc.Dial(host+":"+port, grpc.WithInsecure())

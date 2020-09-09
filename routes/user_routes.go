@@ -23,6 +23,7 @@ func NewUserRoute(service auth_service.UserCRUDClient, r *mux.Router) {
 	prefix := r.PathPrefix("/users").Subrouter()
 	prefix.HandleFunc("", handler.getAll).Methods(http.MethodGet)
 	prefix.HandleFunc("", handler.create).Methods(http.MethodPost)
+	prefix.HandleFunc("/email/{email}", handler.getByEmail).Methods(http.MethodGet)
 	prefix.HandleFunc("/{id}", handler.getByID).Methods(http.MethodGet)
 	prefix.HandleFunc("/{id}", handler.update).Methods(http.MethodPut)
 	prefix.HandleFunc("/{id}", handler.delete).Methods(http.MethodDelete)
@@ -72,6 +73,18 @@ func (l *userRoute) getByID(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		vError.WriteError("Get User By ID failed!", http.StatusBadRequest, err, w)
+	} else {
+		respJson.WriteJSON(data, w)
+	}
+}
+
+func (l *userRoute) getByEmail(w http.ResponseWriter, r *http.Request) {
+	email := varMux.GetVarsMux("email", r)
+
+	data, err := l.service.GetByEmail(context.Background(), &auth_service.Email{Email: email})
+
+	if err != nil {
+		vError.WriteError("Get User By Email failed!", http.StatusBadRequest, err, w)
 	} else {
 		respJson.WriteJSON(data, w)
 	}

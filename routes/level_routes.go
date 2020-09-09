@@ -35,7 +35,7 @@ func (l *levelRoute) getAll(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		vError.WriteError("Get All Levels Data failed!", http.StatusBadRequest, err, w)
 	} else {
-		respJson.WriteJSON(data, w)
+		respJson.WriteJSON(data.List, w)
 	}
 }
 
