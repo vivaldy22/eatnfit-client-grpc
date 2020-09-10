@@ -5,11 +5,12 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/golang/protobuf/ptypes/empty"
+
 	authproto "github.com/vivaldy22/eatnfit-client-grpc/proto/auth"
 
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/gorilla/mux"
 	"github.com/vivaldy22/eatnfit-client-grpc/tools/respJson"
 	"github.com/vivaldy22/eatnfit-client-grpc/tools/vError"
@@ -24,8 +25,9 @@ func NewUserRoute(service authproto.UserCRUDClient, r *mux.Router) {
 	handler := &userRoute{service: service}
 
 	prefix := r.PathPrefix("/users").Subrouter()
-	prefix.HandleFunc("", handler.getAll).Methods(http.MethodGet)
+	prefix.HandleFunc("", handler.getAll).Queries("page", "{page}", "limit", "{limit}", "keyword", "{keyword}").Methods(http.MethodGet)
 	prefix.HandleFunc("", handler.create).Methods(http.MethodPost)
+	prefix.HandleFunc("/total", handler.getTotal).Methods(http.MethodGet)
 	prefix.HandleFunc("/email/{email}", handler.getByEmail).Methods(http.MethodGet)
 	prefix.HandleFunc("/{id}", handler.getByID).Methods(http.MethodGet)
 	prefix.HandleFunc("/{id}", handler.update).Methods(http.MethodPut)
@@ -33,12 +35,26 @@ func NewUserRoute(service authproto.UserCRUDClient, r *mux.Router) {
 }
 
 func (l *userRoute) getAll(w http.ResponseWriter, r *http.Request) {
-	data, err := l.service.GetAll(context.Background(), new(empty.Empty))
+	var pagination = new(authproto.Pagination)
+	pagination.Page = varMux.GetVarsMux("page", r)
+	pagination.Limit = varMux.GetVarsMux("limit", r)
+	pagination.Keyword = varMux.GetVarsMux("keyword", r)
+	data, err := l.service.GetAll(context.Background(), pagination)
 
 	if err != nil {
 		vError.WriteError("Get All Users Data failed!", http.StatusBadRequest, err, w)
 	} else {
 		respJson.WriteJSON(data.List, w)
+	}
+}
+
+func (l *userRoute) getTotal(w http.ResponseWriter, r *http.Request) {
+	data, err := l.service.GetTotal(context.Background(), new(empty.Empty))
+
+	if err != nil {
+		vError.WriteError("Get Total Users Data failed!", http.StatusBadRequest, err, w)
+	} else {
+		respJson.WriteJSON(data, w)
 	}
 }
 

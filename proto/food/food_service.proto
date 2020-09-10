@@ -93,8 +93,13 @@ message Pagination {
   string keyword = 3;
 }
 
+message Total {
+  string total_data = 1;
+}
+
 service FoodCRUD {
   rpc GetAll(Pagination) returns (FoodList);
+  rpc GetTotal(google.protobuf.Empty) returns (Total);
   rpc GetByID(ID) returns (Food);
   rpc Create(Food) returns (Food);
   rpc Update(FoodUpdateRequest) returns (Food);

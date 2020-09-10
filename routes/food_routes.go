@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/golang/protobuf/ptypes/empty"
+
 	foodproto "github.com/vivaldy22/eatnfit-client-grpc/proto/food"
 
 	"github.com/gorilla/mux"
@@ -24,6 +26,7 @@ func NewFoodRoute(service foodproto.FoodCRUDClient, r *mux.Router) {
 	prefix := r.PathPrefix("/foods").Subrouter()
 	prefix.HandleFunc("", handler.getAll).Queries("page", "{page}", "limit", "{limit}", "keyword", "{keyword}").Methods(http.MethodGet)
 	prefix.HandleFunc("", handler.create).Methods(http.MethodPost)
+	prefix.HandleFunc("/total", handler.getTotal).Methods(http.MethodGet)
 	prefix.HandleFunc("/{id}", handler.getByID).Methods(http.MethodGet)
 	prefix.HandleFunc("/{id}", handler.update).Methods(http.MethodPut)
 	prefix.HandleFunc("/{id}", handler.delete).Methods(http.MethodDelete)
@@ -40,6 +43,16 @@ func (l *foodRoute) getAll(w http.ResponseWriter, r *http.Request) {
 		vError.WriteError("Get All Foods Data failed!", http.StatusBadRequest, err, w)
 	} else {
 		respJson.WriteJSON(data.List, w)
+	}
+}
+
+func (l *foodRoute) getTotal(w http.ResponseWriter, r *http.Request) {
+	data, err := l.service.GetTotal(context.Background(), new(empty.Empty))
+
+	if err != nil {
+		vError.WriteError("Get Total Foods Data failed!", http.StatusBadRequest, err, w)
+	} else {
+		respJson.WriteJSON(data, w)
 	}
 }
 

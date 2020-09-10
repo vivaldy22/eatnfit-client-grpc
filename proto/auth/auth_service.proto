@@ -62,8 +62,19 @@ message LoginResponse {
   string token = 2;
 }
 
+message Pagination {
+  string page = 1;
+  string limit = 2;
+  string keyword = 3;
+}
+
+message Total {
+  string total_data = 1;
+}
+
 service UserCRUD {
-  rpc GetAll(google.protobuf.Empty) returns (UserList);
+  rpc GetAll(Pagination) returns (UserList);
+  rpc GetTotal(google.protobuf.Empty) returns (Total);
   rpc GetByID(ID) returns (User);
   rpc GetByEmail(Email) returns (User);
   rpc Create(User) returns (User);
