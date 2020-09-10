@@ -87,8 +87,14 @@ message TransactionUpdateRequest {
   Transaction transaction = 2;
 }
 
+message Pagination {
+  string page = 1;
+  string limit = 2;
+  string keyword = 3;
+}
+
 service FoodCRUD {
-  rpc GetAll(google.protobuf.Empty) returns (FoodList);
+  rpc GetAll(Pagination) returns (FoodList);
   rpc GetByID(ID) returns (Food);
   rpc Create(Food) returns (Food);
   rpc Update(FoodUpdateRequest) returns (Food);

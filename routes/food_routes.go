@@ -8,7 +8,6 @@ import (
 
 	foodproto "github.com/vivaldy22/eatnfit-client-grpc/proto/food"
 
-	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/gorilla/mux"
 	"github.com/vivaldy22/eatnfit-client-grpc/tools/respJson"
 	"github.com/vivaldy22/eatnfit-client-grpc/tools/vError"
@@ -23,7 +22,7 @@ func NewFoodRoute(service foodproto.FoodCRUDClient, r *mux.Router) {
 	handler := &foodRoute{service: service}
 
 	prefix := r.PathPrefix("/foods").Subrouter()
-	prefix.HandleFunc("", handler.getAll).Methods(http.MethodGet)
+	prefix.HandleFunc("", handler.getAll).Queries("page", "{page}", "limit", "{limit}", "keyword", "{keyword}").Methods(http.MethodGet)
 	prefix.HandleFunc("", handler.create).Methods(http.MethodPost)
 	prefix.HandleFunc("/{id}", handler.getByID).Methods(http.MethodGet)
 	prefix.HandleFunc("/{id}", handler.update).Methods(http.MethodPut)
@@ -31,7 +30,11 @@ func NewFoodRoute(service foodproto.FoodCRUDClient, r *mux.Router) {
 }
 
 func (l *foodRoute) getAll(w http.ResponseWriter, r *http.Request) {
-	data, err := l.service.GetAll(context.Background(), new(empty.Empty))
+	var pagination foodproto.Pagination
+	pagination.Page = varMux.GetVarsMux("page", r)
+	pagination.Limit = varMux.GetVarsMux("limit", r)
+	pagination.Keyword = varMux.GetVarsMux("keyword", r)
+	data, err := l.service.GetAll(context.Background(), &pagination)
 
 	if err != nil {
 		vError.WriteError("Get All Foods Data failed!", http.StatusBadRequest, err, w)
