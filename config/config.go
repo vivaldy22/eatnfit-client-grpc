@@ -37,9 +37,11 @@ func InitRouters(r *mux.Router) {
 	authClient := newAuthClient()
 	userClient := newUserClient()
 	levelClient := newLevelClient()
+	foodClient := newFoodClient()
 
 	routes.NewAuthRoute(authClient, userClient, r)
 	routes.NewLevelRoute(levelClient, admin)
 	routes.NewUserRoute(userClient, admin)
 	routes.NewFileRoute(r)
+	routes.NewFoodRoute(foodClient, admin)
 }
