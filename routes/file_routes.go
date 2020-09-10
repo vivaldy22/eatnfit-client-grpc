@@ -6,9 +6,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/vivaldy22/eatnfit-client/tools/respJson"
-	"github.com/vivaldy22/eatnfit-client/tools/vError"
-	"github.com/vivaldy22/eatnfit-client/tools/varMux"
+	"github.com/vivaldy22/eatnfit-client-grpc/tools/respJson"
+	"github.com/vivaldy22/eatnfit-client-grpc/tools/vError"
+	"github.com/vivaldy22/eatnfit-client-grpc/tools/varMux"
 
 	"github.com/gorilla/mux"
 )

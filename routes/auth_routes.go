@@ -5,13 +5,13 @@ import (
 	"encoding/json"
 	"net/http"
 
-	authproto "github.com/vivaldy22/eatnfit-client/proto/auth"
+	authproto "github.com/vivaldy22/eatnfit-client-grpc/proto/auth"
 
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/gorilla/mux"
-	"github.com/vivaldy22/eatnfit-client/tools/respJson"
-	"github.com/vivaldy22/eatnfit-client/tools/vError"
+	"github.com/vivaldy22/eatnfit-client-grpc/tools/respJson"
+	"github.com/vivaldy22/eatnfit-client-grpc/tools/vError"
 )
 
 type authService struct {

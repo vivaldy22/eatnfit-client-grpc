@@ -6,13 +6,13 @@ import (
 	"net/http"
 	"strconv"
 
-	foodproto "github.com/vivaldy22/eatnfit-client/proto/food"
+	foodproto "github.com/vivaldy22/eatnfit-client-grpc/proto/food"
 
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/gorilla/mux"
-	"github.com/vivaldy22/eatnfit-client/tools/respJson"
-	"github.com/vivaldy22/eatnfit-client/tools/vError"
-	"github.com/vivaldy22/eatnfit-client/tools/varMux"
+	"github.com/vivaldy22/eatnfit-client-grpc/tools/respJson"
+	"github.com/vivaldy22/eatnfit-client-grpc/tools/vError"
+	"github.com/vivaldy22/eatnfit-client-grpc/tools/varMux"
 )
 
 type foodRoute struct {

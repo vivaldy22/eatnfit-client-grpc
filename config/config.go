@@ -4,12 +4,12 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/vivaldy22/eatnfit-client/tools/jwtm"
+	"github.com/vivaldy22/eatnfit-client-grpc/middleware"
+	"github.com/vivaldy22/eatnfit-client-grpc/routes"
+	"github.com/vivaldy22/eatnfit-client-grpc/tools/jwtm"
+	"github.com/vivaldy22/eatnfit-client-grpc/tools/viper"
 
 	"github.com/gorilla/mux"
-	"github.com/vivaldy22/eatnfit-client/middleware"
-	"github.com/vivaldy22/eatnfit-client/routes"
-	"github.com/vivaldy22/eatnfit-client/tools/viper"
 )
 
 func NewRouter() *mux.Router {
@@ -17,11 +17,10 @@ func NewRouter() *mux.Router {
 }
 
 func RunServer(r *mux.Router) {
-	host := viper.ViperGetEnv("API_HOST", "localhost")
-	port := viper.ViperGetEnv("API_PORT", "8080")
+	port := viper.ViperGetEnv("PORT", "8080")
 
-	log.Printf("Starting Eat N' Fit API Web Server at %v port: %v\n", host, port)
-	if err := http.ListenAndServe(host+":"+port, r); err != nil {
+	log.Printf("Starting Eat N' Fit API Web Server at port: %v\n", port)
+	if err := http.ListenAndServe(":"+port, r); err != nil {
 		log.Fatal(err)
 	}
 }

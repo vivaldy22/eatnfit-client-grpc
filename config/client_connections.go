@@ -3,11 +3,11 @@ package config
 import (
 	"log"
 
-	foodproto "github.com/vivaldy22/eatnfit-client/proto/food"
+	foodproto "github.com/vivaldy22/eatnfit-client-grpc/proto/food"
 
-	authproto "github.com/vivaldy22/eatnfit-client/proto/auth"
+	authproto "github.com/vivaldy22/eatnfit-client-grpc/proto/auth"
 
-	"github.com/vivaldy22/eatnfit-client/tools/viper"
+	"github.com/vivaldy22/eatnfit-client-grpc/tools/viper"
 	"google.golang.org/grpc"
 )
 
