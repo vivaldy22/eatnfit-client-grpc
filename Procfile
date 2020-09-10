@@ -1,1 +1,1 @@
-web: currency
+web: bin/eatnfit-client-grpc

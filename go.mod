@@ -1,5 +1,5 @@
 // +heroku goVersion go1.14.4
-// +heroku install ./cmd/...// +heroku install ./cmd/...
+// +heroku install ./cmd/...
 module github.com/vivaldy22/eatnfit-client-grpc
 
 go 1.14
