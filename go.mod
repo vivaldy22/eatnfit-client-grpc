@@ -1,3 +1,4 @@
+// +heroku install ./cmd/...// +heroku install ./cmd/...
 module github.com/vivaldy22/eatnfit-client
 
 go 1.14
