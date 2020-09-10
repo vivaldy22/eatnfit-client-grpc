@@ -5,20 +5,21 @@ import (
 	"encoding/json"
 	"net/http"
 
+	authproto "github.com/vivaldy22/eatnfit-client/proto/auth"
+
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/gorilla/mux"
-	auth_service "github.com/vivaldy22/eatnfit-client/proto"
 	"github.com/vivaldy22/eatnfit-client/tools/respJson"
 	"github.com/vivaldy22/eatnfit-client/tools/vError"
 )
 
 type authService struct {
-	service     auth_service.JWTTokenClient
-	userService auth_service.UserCRUDClient
+	service     authproto.JWTTokenClient
+	userService authproto.UserCRUDClient
 }
 
-func NewAuthRoute(service auth_service.JWTTokenClient, userService auth_service.UserCRUDClient, r *mux.Router) {
+func NewAuthRoute(service authproto.JWTTokenClient, userService authproto.UserCRUDClient, r *mux.Router) {
 	handler := &authService{
 		service:     service,
 		userService: userService,
@@ -30,13 +31,13 @@ func NewAuthRoute(service auth_service.JWTTokenClient, userService auth_service.
 }
 
 func (t *authService) login(w http.ResponseWriter, r *http.Request) {
-	var user *auth_service.LoginCredentials
+	var user *authproto.LoginCredentials
 	err := json.NewDecoder(r.Body).Decode(&user)
 
 	if err != nil {
 		vError.WriteError("Decoding json failed!", http.StatusExpectationFailed, err, w)
 	} else {
-		data, err := t.userService.GetByEmail(context.Background(), &auth_service.Email{
+		data, err := t.userService.GetByEmail(context.Background(), &authproto.Email{
 			Email: user.UserEmail,
 		})
 		if err != nil {
@@ -49,7 +50,7 @@ func (t *authService) login(w http.ResponseWriter, r *http.Request) {
 				if err != nil {
 					vError.WriteError("Token generation failed!", http.StatusInternalServerError, err, w)
 				} else {
-					respJson.WriteJSON(&auth_service.LoginResponse{
+					respJson.WriteJSON(&authproto.LoginResponse{
 						User:  data,
 						Token: token.Token,
 					}, w)
@@ -62,7 +63,7 @@ func (t *authService) login(w http.ResponseWriter, r *http.Request) {
 }
 
 func (t *authService) register(w http.ResponseWriter, r *http.Request) {
-	var user *auth_service.User
+	var user *authproto.User
 	err := json.NewDecoder(r.Body).Decode(&user)
 
 	if err != nil {
@@ -76,7 +77,7 @@ func (t *authService) register(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			vError.WriteError("Registering failed", http.StatusBadRequest, err, w)
 		} else {
-			data, err := t.userService.GetByID(context.Background(), &auth_service.ID{Id: res.UserId})
+			data, err := t.userService.GetByID(context.Background(), &authproto.ID{Id: res.UserId})
 
 			if err != nil {
 				vError.WriteError("Get By ID User failed", http.StatusBadRequest, err, w)

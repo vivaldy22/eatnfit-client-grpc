@@ -1,0 +1,112 @@
+syntax = "proto3";
+
+package food_proto;
+
+import "google/protobuf/empty.proto";
+
+message Food {
+  string food_id = 1;
+  string food_portion = 2;
+  string food_name = 3;
+  string food_calories = 4;
+  string food_fat = 5;
+  string food_carbs = 6;
+  string food_protein = 7;
+  string food_price = 8;
+  string food_desc = 9;
+  string food_status = 10;
+}
+
+message FoodList {
+  repeated Food list = 1;
+}
+
+message Packet {
+  string packet_id = 1;
+  string packet_name = 2;
+  string packet_price = 3;
+  string packet_desc = 4;
+  string packet_status = 5;
+}
+
+message PacketAndMenu {
+  string pm_id = 1;
+  string packet_id = 2;
+  string menu_id = 3;
+  string pm_status = 4;
+}
+
+message Transaction {
+  string trans_id = 1;
+  string trans_date = 2;
+  string user_id = 3;
+  string packet_id = 4;
+  string portion = 5;
+  string start_date = 6;
+  string end_date = 7;
+  string start_time = 8;
+  string address = 9;
+  string payment_id = 10;
+}
+
+message TransactionList {
+  repeated Transaction list = 1;
+}
+
+message Payment {
+  string payment_id = 1;
+  string payment_name = 2;
+  string payment_status = 3;
+}
+
+message DetailPacket {
+  Packet packet = 1;
+  repeated Food list_food = 2;
+}
+
+message DetailPacketList {
+  repeated DetailPacket list = 1;
+}
+
+message ID {
+  string id = 1;
+}
+
+message FoodUpdateRequest {
+  ID id = 1;
+  Food food = 2;
+}
+
+message DetailPacketUpdateRequest {
+  ID id = 1;
+  DetailPacket packet = 2;
+}
+
+message TransactionUpdateRequest {
+  ID id = 1;
+  Transaction transaction = 2;
+}
+
+service FoodCRUD {
+  rpc GetAll(google.protobuf.Empty) returns (FoodList);
+  rpc GetByID(ID) returns (Food);
+  rpc Create(Food) returns (Food);
+  rpc Update(FoodUpdateRequest) returns (Food);
+  rpc Delete(ID) returns (google.protobuf.Empty);
+}
+
+service PacketCRUD {
+  rpc GetAll(google.protobuf.Empty) returns (DetailPacketList);
+  rpc GetByID(ID) returns (DetailPacket);
+  rpc Create(DetailPacket) returns (DetailPacket);
+  rpc Update(DetailPacketUpdateRequest) returns (DetailPacket);
+  rpc Delete(ID) returns (google.protobuf.Empty);
+}
+
+service TransactionCRUD {
+  rpc GetAll(google.protobuf.Empty) returns (TransactionList);
+  rpc GetByID(ID) returns (Transaction);
+  rpc Create(Transaction) returns (Transaction);
+  rpc Update(TransactionUpdateRequest) returns (Transaction);
+  rpc Delete(ID) returns (google.protobuf.Empty);
+}

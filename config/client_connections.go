@@ -3,12 +3,13 @@ package config
 import (
 	"log"
 
-	authservice "github.com/vivaldy22/eatnfit-client/proto"
+	"github.com/vivaldy22/eatnfit-client/proto/auth"
+
 	"github.com/vivaldy22/eatnfit-client/tools/viper"
 	"google.golang.org/grpc"
 )
 
-func newLevelClient() authservice.LevelCRUDClient {
+func newLevelClient() auth.LevelCRUDClient {
 	host := viper.ViperGetEnv("GRPC_AUTH_HOST", "localhost")
 	port := viper.ViperGetEnv("GRPC_AUTH_PORT", "1010")
 	conn, err := grpc.Dial(host+":"+port, grpc.WithInsecure())
@@ -16,10 +17,10 @@ func newLevelClient() authservice.LevelCRUDClient {
 		log.Fatal(err)
 	}
 
-	return authservice.NewLevelCRUDClient(conn)
+	return auth.NewLevelCRUDClient(conn)
 }
 
-func newAuthClient() authservice.JWTTokenClient {
+func newAuthClient() auth.JWTTokenClient {
 	host := viper.ViperGetEnv("GRPC_AUTH_HOST", "localhost")
 	port := viper.ViperGetEnv("GRPC_AUTH_PORT", "1010")
 	conn, err := grpc.Dial(host+":"+port, grpc.WithInsecure())
@@ -27,10 +28,10 @@ func newAuthClient() authservice.JWTTokenClient {
 		log.Fatal(err)
 	}
 
-	return authservice.NewJWTTokenClient(conn)
+	return auth.NewJWTTokenClient(conn)
 }
 
-func newUserClient() authservice.UserCRUDClient {
+func newUserClient() auth.UserCRUDClient {
 	host := viper.ViperGetEnv("GRPC_AUTH_HOST", "localhost")
 	port := viper.ViperGetEnv("GRPC_AUTH_PORT", "1010")
 	conn, err := grpc.Dial(host+":"+port, grpc.WithInsecure())
@@ -38,5 +39,5 @@ func newUserClient() authservice.UserCRUDClient {
 		log.Fatal(err)
 	}
 
-	return authservice.NewUserCRUDClient(conn)
+	return auth.NewUserCRUDClient(conn)
 }

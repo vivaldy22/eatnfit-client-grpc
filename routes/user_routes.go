@@ -5,21 +5,22 @@ import (
 	"encoding/json"
 	"net/http"
 
+	authproto "github.com/vivaldy22/eatnfit-client/proto/auth"
+
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/gorilla/mux"
-	auth_service "github.com/vivaldy22/eatnfit-client/proto"
 	"github.com/vivaldy22/eatnfit-client/tools/respJson"
 	"github.com/vivaldy22/eatnfit-client/tools/vError"
 	"github.com/vivaldy22/eatnfit-client/tools/varMux"
 )
 
 type userRoute struct {
-	service auth_service.UserCRUDClient
+	service authproto.UserCRUDClient
 }
 
-func NewUserRoute(service auth_service.UserCRUDClient, r *mux.Router) {
+func NewUserRoute(service authproto.UserCRUDClient, r *mux.Router) {
 	handler := &userRoute{service: service}
 
 	prefix := r.PathPrefix("/users").Subrouter()
@@ -42,7 +43,7 @@ func (l *userRoute) getAll(w http.ResponseWriter, r *http.Request) {
 }
 
 func (l *userRoute) create(w http.ResponseWriter, r *http.Request) {
-	var user *auth_service.User
+	var user *authproto.User
 	err := json.NewDecoder(r.Body).Decode(&user)
 
 	if err != nil {
@@ -50,12 +51,12 @@ func (l *userRoute) create(w http.ResponseWriter, r *http.Request) {
 	} else {
 		hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(user.UserPassword), bcrypt.DefaultCost)
 		user.UserPassword = string(hashedPassword)
-		created, err := l.service.Create(context.Background(), user)
+		created, err := l.service.CreateByAdmin(context.Background(), user)
 
 		if err != nil {
 			vError.WriteError("Create User Failed!", http.StatusBadRequest, err, w)
 		} else {
-			data, err := l.service.GetByID(context.Background(), &auth_service.ID{
+			data, err := l.service.GetByID(context.Background(), &authproto.ID{
 				Id: created.UserId,
 			})
 
@@ -71,7 +72,7 @@ func (l *userRoute) create(w http.ResponseWriter, r *http.Request) {
 func (l *userRoute) getByID(w http.ResponseWriter, r *http.Request) {
 	id := varMux.GetVarsMux("id", r)
 
-	data, err := l.service.GetByID(context.Background(), &auth_service.ID{
+	data, err := l.service.GetByID(context.Background(), &authproto.ID{
 		Id: id,
 	})
 
@@ -85,7 +86,7 @@ func (l *userRoute) getByID(w http.ResponseWriter, r *http.Request) {
 func (l *userRoute) getByEmail(w http.ResponseWriter, r *http.Request) {
 	email := varMux.GetVarsMux("email", r)
 
-	data, err := l.service.GetByEmail(context.Background(), &auth_service.Email{Email: email})
+	data, err := l.service.GetByEmail(context.Background(), &authproto.Email{Email: email})
 
 	if err != nil {
 		vError.WriteError("Get User By Email failed!", http.StatusBadRequest, err, w)
@@ -95,21 +96,21 @@ func (l *userRoute) getByEmail(w http.ResponseWriter, r *http.Request) {
 }
 
 func (l *userRoute) update(w http.ResponseWriter, r *http.Request) {
-	var level *auth_service.User
-	err := json.NewDecoder(r.Body).Decode(&level)
+	var user *authproto.User
+	err := json.NewDecoder(r.Body).Decode(&user)
 
 	if err != nil {
 		vError.WriteError("Decoding json failed", http.StatusExpectationFailed, err, w)
 	} else {
 		id := varMux.GetVarsMux("id", r)
 
-		authID := &auth_service.ID{
+		authID := &authproto.ID{
 			Id: id,
 		}
 
-		_, err := l.service.Update(context.Background(), &auth_service.UserUpdateRequest{
+		_, err := l.service.Update(context.Background(), &authproto.UserUpdateRequest{
 			Id:   authID,
-			User: level,
+			User: user,
 		})
 
 		if err != nil {
@@ -129,7 +130,7 @@ func (l *userRoute) update(w http.ResponseWriter, r *http.Request) {
 func (l *userRoute) delete(w http.ResponseWriter, r *http.Request) {
 	id := varMux.GetVarsMux("id", r)
 
-	authID := &auth_service.ID{
+	authID := &authproto.ID{
 		Id: id,
 	}
 	data, err := l.service.GetByID(context.Background(), authID)
