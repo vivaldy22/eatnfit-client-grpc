@@ -7,7 +7,7 @@ import (
 // ViperGetEnv using viper for getting env
 func ViperGetEnv(key, defaultValue string) string {
 	viper.AutomaticEnv()
-	viper.SetConfigFile("config.env")
+	viper.SetConfigFile(".env")
 	viper.ReadInConfig()
 
 	if envVal := viper.GetString(key); len(envVal) != 0 {
