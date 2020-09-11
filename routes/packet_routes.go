@@ -2,6 +2,7 @@ package routes
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
 
 	"github.com/golang/protobuf/ptypes/empty"
@@ -64,29 +65,28 @@ func (l *packetRoute) getTotal(w http.ResponseWriter, r *http.Request) {
 }
 
 func (l *packetRoute) create(w http.ResponseWriter, r *http.Request) {
-	//var packet *foodproto.Packet
-	//err := json.NewDecoder(r.Body).Decode(&packet)
-	//
-	//if err != nil {
-	//	vError.WriteError("Decoding json failed!", http.StatusExpectationFailed, err, w)
-	//} else {
-	//	created, err := l.service.Create(context.Background(), packet)
-	//
-	//	if err != nil {
-	//		vError.WriteError("Create Packet Failed!", http.StatusBadRequest, err, w)
-	//	} else {
-	//		data, err := l.service.GetByID(context.Background(), &foodproto.ID{
-	//			Id: created.PacketId,
-	//		})
-	//
-	//		if err != nil {
-	//			vError.WriteError("Get Packet by ID failed", http.StatusBadRequest, err, w)
-	//		} else {
-	//			respJson.WriteJSON(data, w)
-	//		}
-	//	}
-	//}
-	w.Write([]byte("create"))
+	var detail *foodproto.DetailPacketInsert
+	err := json.NewDecoder(r.Body).Decode(&detail)
+
+	if err != nil {
+		vError.WriteError("Decoding json failed!", http.StatusExpectationFailed, err, w)
+	} else {
+		created, err := l.service.Create(context.Background(), detail)
+
+		if err != nil {
+			vError.WriteError("Create Packet Failed!", http.StatusBadRequest, err, w)
+		} else {
+			data, err := l.service.GetByID(context.Background(), &foodproto.ID{
+				Id: created.Packet.PacketId,
+			})
+
+			if err != nil {
+				vError.WriteError("Get Packet by ID failed", http.StatusBadRequest, err, w)
+			} else {
+				respJson.WriteJSON(data, w)
+			}
+		}
+	}
 }
 
 func (l *packetRoute) getByID(w http.ResponseWriter, r *http.Request) {
@@ -105,65 +105,53 @@ func (l *packetRoute) getByID(w http.ResponseWriter, r *http.Request) {
 }
 
 func (l *packetRoute) update(w http.ResponseWriter, r *http.Request) {
-	//var packet *foodproto.Packet
-	//err := json.NewDecoder(r.Body).Decode(&packet)
-	//
-	//if err != nil {
-	//	vError.WriteError("Decoding json failed", http.StatusExpectationFailed, err, w)
-	//} else {
-	//	id := varMux.GetVarsMux("id", r)
-	//	idNum, err := strconv.Atoi(id)
-	//	authID := &foodproto.ID{
-	//		Id: strconv.Itoa(idNum),
-	//	}
-	//
-	//	if err != nil {
-	//		vError.WriteError("Converting id failed! not a number", http.StatusExpectationFailed, err, w)
-	//	} else {
-	//		_, err := l.service.Update(context.Background(), &foodproto.PacketUpdateRequest{
-	//			Id:     authID,
-	//			Packet: packet,
-	//		})
-	//
-	//		if err != nil {
-	//			vError.WriteError("Updating data failed!", http.StatusBadRequest, err, w)
-	//		} else {
-	//			data, err := l.service.GetByID(context.Background(), authID)
-	//
-	//			if err != nil {
-	//				vError.WriteError("Get Packet By ID failed!", http.StatusBadRequest, err, w)
-	//			} else {
-	//				respJson.WriteJSON(data, w)
-	//			}
-	//		}
-	//	}
-	//}
-	w.Write([]byte("update"))
+	var packet *foodproto.DetailPacketInsert
+	err := json.NewDecoder(r.Body).Decode(&packet)
+
+	if err != nil {
+		vError.WriteError("Decoding json failed", http.StatusExpectationFailed, err, w)
+	} else {
+		id := varMux.GetVarsMux("id", r)
+		authID := &foodproto.ID{
+			Id: id,
+		}
+
+		_, err := l.service.Update(context.Background(), &foodproto.DetailPacketUpdateRequest{
+			Id:     authID,
+			Packet: packet,
+		})
+
+		if err != nil {
+			vError.WriteError("Updating data failed!", http.StatusBadRequest, err, w)
+		} else {
+			data, err := l.service.GetByID(context.Background(), authID)
+
+			if err != nil {
+				vError.WriteError("Get Packet By ID failed!", http.StatusBadRequest, err, w)
+			} else {
+				respJson.WriteJSON(data, w)
+			}
+		}
+	}
 }
 
 func (l *packetRoute) delete(w http.ResponseWriter, r *http.Request) {
-	//id := varMux.GetVarsMux("id", r)
-	//idNum, err := strconv.Atoi(id)
-	//
-	//if err != nil {
-	//	vError.WriteError("Converting id failed! not a number", http.StatusExpectationFailed, err, w)
-	//} else {
-	//	authID := &foodproto.ID{
-	//		Id: strconv.Itoa(idNum),
-	//	}
-	//	data, err := l.service.GetByID(context.Background(), authID)
-	//
-	//	if err != nil {
-	//		vError.WriteError("Get Packet By ID failed!", http.StatusBadRequest, err, w)
-	//	} else {
-	//		_, err := l.service.Delete(context.Background(), authID)
-	//
-	//		if err != nil {
-	//			vError.WriteError("Delete Packet failed!", http.StatusBadRequest, err, w)
-	//		} else {
-	//			respJson.WriteJSON(data, w)
-	//		}
-	//	}
-	//}
-	w.Write([]byte("delete"))
+	id := varMux.GetVarsMux("id", r)
+
+	authID := &foodproto.ID{
+		Id: id,
+	}
+	data, err := l.service.GetByID(context.Background(), authID)
+
+	if err != nil {
+		vError.WriteError("Get Packet By ID failed!", http.StatusBadRequest, err, w)
+	} else {
+		_, err := l.service.Delete(context.Background(), authID)
+
+		if err != nil {
+			vError.WriteError("Delete Packet failed!", http.StatusBadRequest, err, w)
+		} else {
+			respJson.WriteJSON(data, w)
+		}
+	}
 }

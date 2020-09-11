@@ -68,6 +68,15 @@ message PacketList {
   repeated Packet list = 1;
 }
 
+message FoodID {
+  string food_id = 1;
+}
+
+message DetailPacketInsert {
+  Packet packet = 1;
+  repeated FoodID list_food = 2;
+}
+
 message ID {
   string id = 1;
 }
@@ -79,7 +88,7 @@ message FoodUpdateRequest {
 
 message DetailPacketUpdateRequest {
   ID id = 1;
-  DetailPacket packet = 2;
+  DetailPacketInsert packet = 2;
 }
 
 message TransactionUpdateRequest {
@@ -110,8 +119,8 @@ service PacketCRUD {
   rpc GetAll(Pagination) returns (PacketList);
   rpc GetTotal(google.protobuf.Empty) returns (Total);
   rpc GetByID(ID) returns (DetailPacket);
-  rpc Create(DetailPacket) returns (DetailPacket);
-  rpc Update(DetailPacketUpdateRequest) returns (DetailPacket);
+  rpc Create(DetailPacketInsert) returns (DetailPacketInsert);
+  rpc Update(DetailPacketUpdateRequest) returns (DetailPacketInsert);
   rpc Delete(ID) returns (google.protobuf.Empty);
 }
 
