@@ -4,7 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
-	"strconv"
+
+	"github.com/vivaldy22/eatnfit-client-grpc/middleware"
 
 	"github.com/golang/protobuf/ptypes/empty"
 
@@ -20,16 +21,22 @@ type foodRoute struct {
 	service foodproto.FoodCRUDClient
 }
 
-func NewFoodRoute(service foodproto.FoodCRUDClient, r *mux.Router) {
+func NewFoodRoute(service foodproto.FoodCRUDClient, r *mux.Router, admin *mux.Router) {
 	handler := &foodRoute{service: service}
 
-	prefix := r.PathPrefix("/foods").Subrouter()
-	prefix.HandleFunc("", handler.getAll).Queries("page", "{page}", "limit", "{limit}", "keyword", "{keyword}").Methods(http.MethodGet)
-	prefix.HandleFunc("", handler.create).Methods(http.MethodPost)
-	prefix.HandleFunc("/total", handler.getTotal).Methods(http.MethodGet)
-	prefix.HandleFunc("/{id}", handler.getByID).Methods(http.MethodGet)
-	prefix.HandleFunc("/{id}", handler.update).Methods(http.MethodPut)
-	prefix.HandleFunc("/{id}", handler.delete).Methods(http.MethodDelete)
+	adm := admin.PathPrefix("/foods").Subrouter()
+	adm.HandleFunc("", handler.getAll).Queries("page", "{page}", "limit", "{limit}", "keyword", "{keyword}").Methods(http.MethodGet)
+	adm.HandleFunc("", handler.create).Methods(http.MethodPost)
+	adm.HandleFunc("/total", handler.getTotal).Methods(http.MethodGet)
+	adm.HandleFunc("/{id}", handler.getByID).Methods(http.MethodGet)
+	adm.HandleFunc("/{id}", handler.update).Methods(http.MethodPut)
+	adm.HandleFunc("/{id}", handler.delete).Methods(http.MethodDelete)
+
+	usr := r.PathPrefix("/foods").Subrouter()
+	usr.Use(middleware.UsrJwtMiddleware.Handler)
+	usr.HandleFunc("", handler.getAll).Queries("page", "{page}", "limit", "{limit}", "keyword", "{keyword}").Methods(http.MethodGet)
+	usr.HandleFunc("/total", handler.getTotal).Methods(http.MethodGet)
+	usr.HandleFunc("/{id}", handler.getByID).Methods(http.MethodGet)
 }
 
 func (l *foodRoute) getAll(w http.ResponseWriter, r *http.Request) {
@@ -83,20 +90,15 @@ func (l *foodRoute) create(w http.ResponseWriter, r *http.Request) {
 
 func (l *foodRoute) getByID(w http.ResponseWriter, r *http.Request) {
 	id := varMux.GetVarsMux("id", r)
-	idNum, err := strconv.Atoi(id)
+
+	data, err := l.service.GetByID(context.Background(), &foodproto.ID{
+		Id: id,
+	})
 
 	if err != nil {
-		vError.WriteError("Converting id failed! not a number", http.StatusExpectationFailed, err, w)
+		vError.WriteError("Get Food By ID failed!", http.StatusBadRequest, err, w)
 	} else {
-		data, err := l.service.GetByID(context.Background(), &foodproto.ID{
-			Id: strconv.Itoa(idNum),
-		})
-
-		if err != nil {
-			vError.WriteError("Get Food By ID failed!", http.StatusBadRequest, err, w)
-		} else {
-			respJson.WriteJSON(data, w)
-		}
+		respJson.WriteJSON(data, w)
 	}
 }
 
@@ -108,29 +110,24 @@ func (l *foodRoute) update(w http.ResponseWriter, r *http.Request) {
 		vError.WriteError("Decoding json failed", http.StatusExpectationFailed, err, w)
 	} else {
 		id := varMux.GetVarsMux("id", r)
-		idNum, err := strconv.Atoi(id)
 		authID := &foodproto.ID{
-			Id: strconv.Itoa(idNum),
+			Id: id,
 		}
 
+		_, err := l.service.Update(context.Background(), &foodproto.FoodUpdateRequest{
+			Id:   authID,
+			Food: food,
+		})
+
 		if err != nil {
-			vError.WriteError("Converting id failed! not a number", http.StatusExpectationFailed, err, w)
+			vError.WriteError("Updating data failed!", http.StatusBadRequest, err, w)
 		} else {
-			_, err := l.service.Update(context.Background(), &foodproto.FoodUpdateRequest{
-				Id:   authID,
-				Food: food,
-			})
+			data, err := l.service.GetByID(context.Background(), authID)
 
 			if err != nil {
-				vError.WriteError("Updating data failed!", http.StatusBadRequest, err, w)
+				vError.WriteError("Get Food By ID failed!", http.StatusBadRequest, err, w)
 			} else {
-				data, err := l.service.GetByID(context.Background(), authID)
-
-				if err != nil {
-					vError.WriteError("Get Food By ID failed!", http.StatusBadRequest, err, w)
-				} else {
-					respJson.WriteJSON(data, w)
-				}
+				respJson.WriteJSON(data, w)
 			}
 		}
 	}
@@ -138,26 +135,21 @@ func (l *foodRoute) update(w http.ResponseWriter, r *http.Request) {
 
 func (l *foodRoute) delete(w http.ResponseWriter, r *http.Request) {
 	id := varMux.GetVarsMux("id", r)
-	idNum, err := strconv.Atoi(id)
+
+	authID := &foodproto.ID{
+		Id: id,
+	}
+	data, err := l.service.GetByID(context.Background(), authID)
 
 	if err != nil {
-		vError.WriteError("Converting id failed! not a number", http.StatusExpectationFailed, err, w)
+		vError.WriteError("Get Food By ID failed!", http.StatusBadRequest, err, w)
 	} else {
-		authID := &foodproto.ID{
-			Id: strconv.Itoa(idNum),
-		}
-		data, err := l.service.GetByID(context.Background(), authID)
+		_, err := l.service.Delete(context.Background(), authID)
 
 		if err != nil {
-			vError.WriteError("Get Food By ID failed!", http.StatusBadRequest, err, w)
+			vError.WriteError("Delete Food failed!", http.StatusBadRequest, err, w)
 		} else {
-			_, err := l.service.Delete(context.Background(), authID)
-
-			if err != nil {
-				vError.WriteError("Delete Food failed!", http.StatusBadRequest, err, w)
-			} else {
-				respJson.WriteJSON(data, w)
-			}
+			respJson.WriteJSON(data, w)
 		}
 	}
 }

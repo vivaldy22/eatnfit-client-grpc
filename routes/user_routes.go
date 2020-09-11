@@ -21,17 +21,18 @@ type userRoute struct {
 	service authproto.UserCRUDClient
 }
 
-func NewUserRoute(service authproto.UserCRUDClient, r *mux.Router) {
+func NewUserRoute(service authproto.UserCRUDClient, admin *mux.Router) {
 	handler := &userRoute{service: service}
 
-	prefix := r.PathPrefix("/users").Subrouter()
-	prefix.HandleFunc("", handler.getAll).Queries("page", "{page}", "limit", "{limit}", "keyword", "{keyword}").Methods(http.MethodGet)
-	prefix.HandleFunc("", handler.create).Methods(http.MethodPost)
-	prefix.HandleFunc("/total", handler.getTotal).Methods(http.MethodGet)
-	prefix.HandleFunc("/email/{email}", handler.getByEmail).Methods(http.MethodGet)
-	prefix.HandleFunc("/{id}", handler.getByID).Methods(http.MethodGet)
-	prefix.HandleFunc("/{id}", handler.update).Methods(http.MethodPut)
-	prefix.HandleFunc("/{id}", handler.delete).Methods(http.MethodDelete)
+	adm := admin.PathPrefix("/users").Subrouter()
+	adm.HandleFunc("", handler.getAll).Queries("page", "{page}", "limit", "{limit}", "keyword", "{keyword}").Methods(http.MethodGet)
+	adm.HandleFunc("", handler.create).Methods(http.MethodPost)
+	adm.HandleFunc("/total", handler.getTotal).Methods(http.MethodGet)
+	adm.HandleFunc("/email/{email}", handler.getByEmail).Methods(http.MethodGet)
+	adm.HandleFunc("/{id}", handler.getByID).Methods(http.MethodGet)
+	adm.HandleFunc("/{id}", handler.update).Methods(http.MethodPut)
+	adm.HandleFunc("/{id}", handler.delete).Methods(http.MethodDelete)
+
 }
 
 func (l *userRoute) getAll(w http.ResponseWriter, r *http.Request) {
@@ -123,6 +124,8 @@ func (l *userRoute) update(w http.ResponseWriter, r *http.Request) {
 		authID := &authproto.ID{
 			Id: id,
 		}
+		hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(user.UserPassword), bcrypt.DefaultCost)
+		user.UserPassword = string(hashedPassword)
 
 		_, err := l.service.Update(context.Background(), &authproto.UserUpdateRequest{
 			Id:   authID,

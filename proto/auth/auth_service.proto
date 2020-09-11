@@ -16,6 +16,14 @@ message User {
   string user_status = 9;
 }
 
+message UserRegister {
+  string user_email = 1;
+  string user_password = 2;
+  string user_f_name = 3;
+  string user_l_name = 4;
+  string user_gender = 5;
+}
+
 message Level {
   string level_id = 1;
   string level_name = 2;
@@ -51,6 +59,11 @@ message LevelUpdateRequest {
 message LoginCredentials {
   string user_email = 1;
   string user_password = 2;
+}
+
+message TokenCredentials {
+  string user_email = 1;
+  string hmac_secret = 2;
 }
 
 message Token {
@@ -92,5 +105,5 @@ service LevelCRUD {
 }
 
 service JWTToken {
-  rpc GenerateToken(LoginCredentials) returns (Token);
+  rpc GenerateToken(TokenCredentials) returns (Token);
 }

@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/vivaldy22/eatnfit-client-grpc/tools/consts"
+
 	authproto "github.com/vivaldy22/eatnfit-client-grpc/proto/auth"
 
 	"golang.org/x/crypto/bcrypt"
@@ -45,7 +47,14 @@ func (t *authService) login(w http.ResponseWriter, r *http.Request) {
 		} else {
 			comparePass := bcrypt.CompareHashAndPassword([]byte(data.UserPassword), []byte(user.UserPassword))
 			if user.UserEmail == data.UserEmail && comparePass == nil {
-				token, err := t.service.GenerateToken(context.Background(), user)
+				var tokenCredentials = new(authproto.TokenCredentials)
+				if data.UserLevel == "1" {
+					tokenCredentials.HmacSecret = consts.HMACADM
+				} else {
+					tokenCredentials.HmacSecret = consts.HMACUSR
+				}
+				tokenCredentials.UserEmail = data.UserEmail
+				token, err := t.service.GenerateToken(context.Background(), tokenCredentials)
 
 				if err != nil {
 					vError.WriteError("Token generation failed!", http.StatusInternalServerError, err, w)
@@ -63,14 +72,22 @@ func (t *authService) login(w http.ResponseWriter, r *http.Request) {
 }
 
 func (t *authService) register(w http.ResponseWriter, r *http.Request) {
-	var user *authproto.User
-	err := json.NewDecoder(r.Body).Decode(&user)
+	var register *authproto.UserRegister
+	var user = new(authproto.User)
+	err := json.NewDecoder(r.Body).Decode(&register)
 
 	if err != nil {
 		vError.WriteError("Decoding json failed!", http.StatusExpectationFailed, err, w)
 	} else {
-		hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(user.UserPassword), bcrypt.DefaultCost)
+		hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(register.UserPassword), bcrypt.DefaultCost)
 		user.UserPassword = string(hashedPassword)
+		user.UserEmail = register.UserEmail
+		user.UserPassword = register.UserPassword
+		user.UserFName = register.UserFName
+		user.UserLName = register.UserLName
+		user.UserGender = register.UserGender
+		user.UserBalance = "0"
+		user.UserLevel = "2"
 
 		res, err := t.userService.Create(context.Background(), user)
 
