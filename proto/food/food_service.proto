@@ -74,7 +74,7 @@ message FoodID {
 
 message DetailPacketInsert {
   Packet packet = 1;
-  repeated FoodID list_food = 2;
+  repeated string list_food = 2;
 }
 
 message ID {

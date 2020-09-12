@@ -7,6 +7,7 @@ import (
 
 	"github.com/golang/protobuf/ptypes/empty"
 
+	"github.com/vivaldy22/eatnfit-client-grpc/middleware"
 	authproto "github.com/vivaldy22/eatnfit-client-grpc/proto/auth"
 
 	"golang.org/x/crypto/bcrypt"
@@ -21,7 +22,7 @@ type userRoute struct {
 	service authproto.UserCRUDClient
 }
 
-func NewUserRoute(service authproto.UserCRUDClient, admin *mux.Router) {
+func NewUserRoute(service authproto.UserCRUDClient, r *mux.Router, admin *mux.Router) {
 	handler := &userRoute{service: service}
 
 	adm := admin.PathPrefix("/users").Subrouter()
@@ -33,6 +34,9 @@ func NewUserRoute(service authproto.UserCRUDClient, admin *mux.Router) {
 	adm.HandleFunc("/{id}", handler.update).Methods(http.MethodPut)
 	adm.HandleFunc("/{id}", handler.delete).Methods(http.MethodDelete)
 
+	usr := r.PathPrefix("/users").Subrouter()
+	usr.Use(middleware.UsrJwtMiddleware.Handler)
+	usr.HandleFunc("/{id}", handler.getByID).Methods(http.MethodGet)
 }
 
 func (l *userRoute) getAll(w http.ResponseWriter, r *http.Request) {
