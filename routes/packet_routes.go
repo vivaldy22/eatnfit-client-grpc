@@ -116,20 +116,25 @@ func (l *packetRoute) update(w http.ResponseWriter, r *http.Request) {
 			Id: id,
 		}
 
-		_, err := l.service.Update(context.Background(), &foodproto.DetailPacketUpdateRequest{
-			Id:     authID,
-			Packet: packet,
-		})
+		_, err := l.service.Delete(context.Background(), authID)
 
 		if err != nil {
 			vError.WriteError("Updating data failed!", http.StatusBadRequest, err, w)
 		} else {
-			data, err := l.service.GetByID(context.Background(), authID)
+			created, err := l.service.Create(context.Background(), packet)
 
 			if err != nil {
-				vError.WriteError("Get Packet By ID failed!", http.StatusBadRequest, err, w)
+				vError.WriteError("Create Packet Failed!", http.StatusBadRequest, err, w)
 			} else {
-				respJson.WriteJSON(data, w)
+				data, err := l.service.GetByID(context.Background(), &foodproto.ID{
+					Id: created.Packet.PacketId,
+				})
+
+				if err != nil {
+					vError.WriteError("Get Packet By ID failed!", http.StatusBadRequest, err, w)
+				} else {
+					respJson.WriteJSON(data, w)
+				}
 			}
 		}
 	}

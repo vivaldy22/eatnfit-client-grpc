@@ -42,11 +42,23 @@ message Transaction {
   string user_id = 3;
   string packet_id = 4;
   string portion = 5;
-  string start_date = 6;
-  string end_date = 7;
+  string total_price = 6;
+  string start_date = 7;
   string start_time = 8;
   string address = 9;
   string payment_id = 10;
+  string order_status = 11;
+  string trans_status = 12;
+}
+
+message TransactionInput {
+  string user_id = 1;
+  string packet_id = 2;
+  string portion = 3;
+  string start_date = 4;
+  string start_time = 5;
+  string address = 6;
+  string payment_id = 7;
 }
 
 message TransactionList {
@@ -125,10 +137,10 @@ service PacketCRUD {
 }
 
 service TransactionCRUD {
-  rpc GetAll(google.protobuf.Empty) returns (TransactionList);
+  rpc GetAll(Pagination) returns (TransactionList);
   rpc GetTotal(google.protobuf.Empty) returns (Total);
-  rpc GetByID(ID) returns (Transaction);
+  rpc GetByTransID(ID) returns (Transaction);
+  rpc GetByUserID(ID) returns (Transaction);
   rpc Create(Transaction) returns (Transaction);
-  rpc Update(TransactionUpdateRequest) returns (Transaction);
   rpc Delete(ID) returns (google.protobuf.Empty);
 }

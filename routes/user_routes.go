@@ -18,6 +18,10 @@ import (
 	"github.com/vivaldy22/eatnfit-client-grpc/tools/varMux"
 )
 
+type topupInputType struct {
+	Amount string `json:"amount"`
+}
+
 type userRoute struct {
 	service authproto.UserCRUDClient
 }
@@ -37,6 +41,10 @@ func NewUserRoute(service authproto.UserCRUDClient, r *mux.Router, admin *mux.Ro
 	usr := r.PathPrefix("/users").Subrouter()
 	usr.Use(middleware.UsrJwtMiddleware.Handler)
 	usr.HandleFunc("/{id}", handler.getByID).Methods(http.MethodGet)
+
+	topup := r.PathPrefix("/topup").Subrouter()
+	topup.Use(middleware.UsrJwtMiddleware.Handler)
+	topup.HandleFunc("/{id}", handler.topUp).Methods(http.MethodPost)
 }
 
 func (l *userRoute) getAll(w http.ResponseWriter, r *http.Request) {
@@ -169,4 +177,34 @@ func (l *userRoute) delete(w http.ResponseWriter, r *http.Request) {
 			respJson.WriteJSON(data, w)
 		}
 	}
+}
+
+func (l *userRoute) topUp(w http.ResponseWriter, r *http.Request) {
+	var amount = new(topupInputType)
+	err := json.NewDecoder(r.Body).Decode(amount)
+	id := varMux.GetVarsMux("id", r)
+
+	if err != nil {
+		vError.WriteError("Decoding json failed!", http.StatusExpectationFailed, err, w)
+	} else {
+		_, err := l.service.TopUp(context.Background(), &authproto.TopUpInput{
+			UserId: id,
+			Amount: amount.Amount,
+		})
+
+		if err != nil {
+			vError.WriteError("Top Up Failed!", http.StatusBadRequest, err, w)
+		} else {
+			data, err := l.service.GetByID(context.Background(), &authproto.ID{
+				Id: id,
+			})
+
+			if err != nil {
+				vError.WriteError("Get User By ID failed!", http.StatusBadRequest, err, w)
+			} else {
+				respJson.WriteJSON(data, w)
+			}
+		}
+	}
+
 }

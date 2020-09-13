@@ -65,3 +65,14 @@ func newPacketClient() foodproto.PacketCRUDClient {
 
 	return foodproto.NewPacketCRUDClient(conn)
 }
+
+func newTransactionClient() foodproto.TransactionCRUDClient {
+	host := viper.ViperGetEnv("GRPC_FOOD_HOST", "localhost")
+	port := viper.ViperGetEnv("GRPC_FOOD_PORT", "1011")
+	conn, err := grpc.Dial(host+":"+port, grpc.WithInsecure())
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return foodproto.NewTransactionCRUDClient(conn)
+}
