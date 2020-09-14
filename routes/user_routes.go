@@ -116,7 +116,17 @@ func (l *userRoute) getByEmail(w http.ResponseWriter, r *http.Request) {
 	data, err := l.service.GetByEmail(context.Background(), &authproto.Email{Email: email})
 
 	if err != nil {
-		vError.WriteError("Get User By Email failed!", http.StatusBadRequest, err, w)
+		respJson.WriteJSON(&authproto.User{
+			UserId:       "error",
+			UserEmail:    "error",
+			UserPassword: "error",
+			UserFName:    "error",
+			UserLName:    "error",
+			UserGender:   "error",
+			UserBalance:  "error",
+			UserLevel:    "error",
+			UserStatus:   "error",
+		}, w)
 	} else {
 		respJson.WriteJSON(data, w)
 	}
