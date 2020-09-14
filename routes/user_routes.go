@@ -24,6 +24,7 @@ type userRoute struct {
 
 func NewUserRoute(service authproto.UserCRUDClient, r *mux.Router, admin *mux.Router) {
 	handler := &userRoute{service: service}
+	r.HandleFunc("/users/email/{email}", handler.getByEmail).Methods(http.MethodGet)
 
 	adm := admin.PathPrefix("/users").Subrouter()
 	adm.HandleFunc("", handler.getAll).Queries("page", "{page}", "limit", "{limit}", "keyword", "{keyword}").Methods(http.MethodGet)
