@@ -25,6 +25,7 @@ func RunServer(r *mux.Router) {
 }
 
 func InitRouters(r *mux.Router) {
+	r.Use(middleware.CORSMiddleware)
 	r.Use(middleware.ActivityLogMiddleware)
 
 	admin := r.PathPrefix("/admin").Subrouter()
