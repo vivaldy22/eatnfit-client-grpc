@@ -103,6 +103,11 @@ message TopUpInput {
   string balance_type = 3;
 }
 
+message ErrorMessage {
+  string code = 1;
+  string message = 2;
+}
+
 service UserCRUD {
   rpc GetAll(Pagination) returns (UserList);
   rpc GetTotal(google.protobuf.Empty) returns (Total);
@@ -113,6 +118,7 @@ service UserCRUD {
   rpc Update(UserUpdateRequest) returns (User);
   rpc Delete(ID) returns (google.protobuf.Empty);
   rpc TopUp(TopUpInput) returns (User);
+  rpc MinusWallet(TopUpInput) returns (User);
   rpc GetBalanceHistory(ID) returns (BalanceHistoryList);
 }
 

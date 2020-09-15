@@ -38,7 +38,9 @@ func NewUserRoute(service authproto.UserCRUDClient, r *mux.Router, admin *mux.Ro
 	usr := r.PathPrefix("/users").Subrouter()
 	usr.Use(middleware.UsrJwtMiddleware.Handler)
 	usr.HandleFunc("/{id}", handler.getByID).Methods(http.MethodGet)
+	usr.HandleFunc("/{id}", handler.update).Methods(http.MethodPut)
 
+	r.HandleFunc("/wallet/minus/{id}", handler.minusWallet).Methods(http.MethodPost)
 	topup := r.PathPrefix("/topup").Subrouter()
 	topup.Use(middleware.UsrJwtMiddleware.Handler)
 	topup.HandleFunc("/{id}", handler.topUp).Methods(http.MethodPost)
@@ -116,19 +118,15 @@ func (l *userRoute) getByEmail(w http.ResponseWriter, r *http.Request) {
 	data, err := l.service.GetByEmail(context.Background(), &authproto.Email{Email: email})
 
 	if err != nil {
-		respJson.WriteJSON(&authproto.User{
-			UserId:       "error",
-			UserEmail:    "error",
-			UserPassword: "error",
-			UserFName:    "error",
-			UserLName:    "error",
-			UserGender:   "error",
-			UserBalance:  "error",
-			UserLevel:    "error",
-			UserStatus:   "error",
+		respJson.WriteJSON(&authproto.ErrorMessage{
+			Code:    "400",
+			Message: "Not found",
 		}, w)
 	} else {
-		respJson.WriteJSON(data, w)
+		respJson.WriteJSON(&authproto.ErrorMessage{
+			Code:    "200",
+			Message: data.UserEmail,
+		}, w)
 	}
 }
 
@@ -196,6 +194,7 @@ func (l *userRoute) topUp(w http.ResponseWriter, r *http.Request) {
 		vError.WriteError("Decoding json failed!", http.StatusExpectationFailed, err, w)
 	} else {
 		input.UserId = id
+		input.BalanceType = "1"
 		_, err := l.service.TopUp(context.Background(), input)
 
 		if err != nil {
@@ -222,6 +221,34 @@ func (l *userRoute) topUpHistory(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		vError.WriteError("Get Balance History Failed!", http.StatusBadRequest, err, w)
 	} else {
-		respJson.WriteJSON(data, w)
+		respJson.WriteJSON(data.List, w)
+	}
+}
+
+func (l *userRoute) minusWallet(w http.ResponseWriter, r *http.Request) {
+	id := varMux.GetVarsMux("id", r)
+	var input *authproto.TopUpInput
+	err := json.NewDecoder(r.Body).Decode(&input)
+
+	if err != nil {
+		vError.WriteError("Decoding json failed!", http.StatusExpectationFailed, err, w)
+	} else {
+		input.UserId = id
+		input.BalanceType = "2"
+		_, err := l.service.MinusWallet(context.Background(), input)
+
+		if err != nil {
+			vError.WriteError("Minus Wallet Failed!", http.StatusBadRequest, err, w)
+		} else {
+			data, err := l.service.GetByID(context.Background(), &authproto.ID{
+				Id: id,
+			})
+
+			if err != nil {
+				vError.WriteError("Get User By ID failed!", http.StatusBadRequest, err, w)
+			} else {
+				respJson.WriteJSON(data, w)
+			}
+		}
 	}
 }
