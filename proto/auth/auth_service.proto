@@ -36,6 +36,7 @@ message BalanceHistory {
   string user_id = 3;
   string amount = 4;
   string balhistory_type = 5;
+  string balhistory_title = 6;
 }
 
 message BalanceHistoryList {
@@ -103,6 +104,13 @@ message TopUpInput {
   string balance_type = 3;
 }
 
+message CheckoutInput {
+  string user_id = 1;
+  string amount = 2;
+  string balance_type = 3;
+  string title = 4;
+}
+
 message ErrorMessage {
   string code = 1;
   string message = 2;
@@ -118,8 +126,9 @@ service UserCRUD {
   rpc Update(UserUpdateRequest) returns (User);
   rpc Delete(ID) returns (google.protobuf.Empty);
   rpc TopUp(TopUpInput) returns (User);
-  rpc MinusWallet(TopUpInput) returns (User);
+  rpc MinusWallet(CheckoutInput) returns (User);
   rpc GetBalanceHistory(ID) returns (BalanceHistoryList);
+  rpc EditUserProfile(UserUpdateRequest) returns (User);
 }
 
 service LevelCRUD {

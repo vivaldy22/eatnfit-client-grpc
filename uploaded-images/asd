@@ -1,0 +1,152 @@
+INSERT INTO tb_food VALUES 
+('', 1, '(Muscle Building Food) Steamed Teochew Sauce', 310, 11, 46, 6, 40000, 
+'Kreasi sehat dan lezat dari Eat & Fit dengan 
+takaran gizi yang diukur oleh Nutritionist terbaik untuk 
+konsumen yang fokus dalam pembentukan otot. Hidangan ini 
+disajikan lengkap dengan Nasi Merah, Mun Tahu,  Cah Sawi & Wortel.', 1),
+(UUID(), 1, '(Diet Food) Bola Bola Daging Cincang', 288, 19, 0, 26, 50000, 
+'Menu Bola-Bola Daging Cincang, menggunakan daging pilihan 
+yang minim akan lemak dan tinggi akan protein serta zat besi. 
+Disajikan lengkap dengan Bubur Nasi Merah, Tumis Jamur Merang Cincang, dan Cah Sawi Putih Wortel Cincang', 1),
+(UUID(), 1, '(HeartAttack Food) Beef Bulgogi with Shirataki Noodle', 290, 14, 62, 10, 53000, 
+'Kreasi hidangan daging pilihan yang minim akan lemak 
+dan tinggi akan protein serta zat besi. Disajikan dengan shirataki noodle 
+japchae style, spinach namul & kimchi.', 1),
+(UUID(), 1, '(Pregnancy Food) Vegetable Spring Roll Pregnancy', 100, 2.84, 7.44, 1.99, 45000, 
+'Menu ayam goreng mentega yang rendah lemak dan kalori 
+serta mengandung protein. Disajikan lengkap dengan Brown rice, 
+ayam goreng mentega, vegetable spring roll, serta Greenbeans.', 1),
+(UUID(), 1, '(Vegetarian Food) Tongseng Jamur Tiram', 100, 3, 9, 12, 35000, 
+'Kelezatan tongseng jamur tiram dalam paket vegetarian yang 
+disajikan lengkap dengan nasi merah bakar, wok fried greenpeas dan paprika, 
+tumis putren, dan wortel. Sangat direkomendasikan bagi anda yang merupak seorang vegetarian', 1),
+(UUID(), 1, 'Nasi Putih', 204, 0.44, 44.08, 4.2, 3000, 
+'Terdapat 204 kalori dalam 1 porsi (1 mangkuk) nasi yang 
+disajikan dengan harga sebesar Rp.3000,00 untuk tiap porsinya', 1), 
+(UUID(), 1, 'Chicken Cordon Bleu', 304, 10.68, 9, 40, 15000, 
+'Terdapat 304 kalori dalam 1 porsi (1 piring) Chicken Cordon Bleu 
+yang disajikan dengan harga sebesar Rp.5000,00 untuk tiap porsinya', 1),
+(UUID(), 1, 'Beef Teriyaki', 210, 9, 12, 19, 35000, 
+'Terdapat 210 kalori dalam 1 porsi (1 mangkuk) Beef Teriyaki yang 
+disajikan dengan harga sebesar Rp.35.000,00 tiap porsinya', 1),
+(UUID(), 1, 'Kakap Asam Manis', 100, 1.34, 0, 20.51, 30000, 
+'Terdapat 100 kalori dalam 1 porsi (1 piring) Kakap Asam Manis yang 
+disajikan dengan harga sebesar Rp.30.000,00 tiap porsinya', 1),
+(UUID(), 1, 'Puding', 147, 4.07, 24.86, 2.6, 2000, 
+'Terdapat 147 kalori dalam 1 porsi (1 mangkuk) Puding yang 
+disajikan dengan harga sebesar Rp.2.000,00 tiap porsinya', 1),
+(UUID(), 1, 'Capcay', 67, 2.60, 9.67, 1.58, 20000, 
+'Terdapat 67 kalori dalam 1 porsi (1 mangkuk) capcay yang 
+disajikan dengan harga sebesar Rp.20.000,00 tiap porsinya', 1),
+(UUID(), 2, 'Semangka', 60, 0.3, 16, 2, 35000, 
+'Terdapat 60 kalori dalam 2 buah semangka yang 
+disajikan dengan harga sebesar Rp.35.000,00/ 2 buah semangka', 1),
+(UUID(), 1, 'Kerupuk', 15, 0.76, 1.83, 0.22, 2000, 
+'Terdapat 15 kalori dalam 1 kerupuk bundar yang 
+disajikan dengan harga sebesar Rp.2.000,00/ kerupuk', 1),
+(UUID(), 1, 'Air Mineral', 0, 0, 0, 0, 4000, 
+'1 botol air mineral (600 ml) tersedia dengan harga Rp.4000, 00/ botol', 1),
+(UUID(), 1, 'Orange Juice', 110, 0, 27, 0, 5000, 
+'Terdapat 110 kalori dalam 1 botol (250 ml) yang disajikan dengan harga sebesar Rp.5.000/botol', 1),
+(UUID(), 1, 'Udang Goreng Tepung', 287, 14.64, 27.57, 10.58, 25000, 
+'Terdapat kalori sebesar 287 kkal dalam 1 porsi (1 piring) udang goreng tepung', 1),
+(UUID(), 1, 'Soup Ayam Sosis', 75, 2.46, 9.35, 4.05, 20000, 
+'Terdapat 75 kalori yang terkandung dalam 1 mangkuk soup ayam sosis', 1),
+(UUID(), 1, 'Asinan Jakarta', 148, 5.02, 22.97, 4.97, 15000, 
+'Terdapat 148 kalori dalam 1 porsi (1 piring) asinan Jakarta', 1),
+(UUID(), 1, 'Es Kelapa', 113, 2.05, 24.27, 0.21, 4000, 
+'Terdapat 113 kalori dalam Es Kelapa (1 gelas) dengan harga sebesar Rp.4000,00 tiap porsinya', 1),
+(UUID(), 1, 'Kambing Guling', 109, 2.31, 0, 20.6, 1600000, 
+'Takaran AKG untuk 1 porsi (1 piring daging kambing guling)', 1),
+(UUID(), 1, 'Sate Kambing', 216, 14.06, 4.81, 18.93, 10000, 
+'Takaran AKG untuk 1 porsi (100 gr) daging sate kambing dengan harga sebesar Rp.4000,00 tiap porsinya', 1),
+(UUID(), 1, 'Gulai Kambing', 260, 11.53, 7.52, 32.87, 15000, 
+'Takaran AKG untuk 1 porsi (1 mangkuk gulai daging kambing)', 1),
+(UUID(), 1, 'Acar', 12, 0.12, 2.68, 0.4, 3000, 
+'Takaran AKG untuk 1 porsi (1 mangkuk sedang acar) dengan harga sebesar Rp.3000,00 tiap porsinya', 1),
+(UUID(), 1, 'Mie', 219, 3.3, 40.02, 7.22, 6000, 
+'Takaran AKG untuk 1 porsi (1 mangkuk sedang) mie dengan harga sebesar Rp.6000,00 tiap porsinya', 1),
+(UUID(), 1, 'Pisang', 105, 0.39, 26.95, 1.29, 3000, 
+'Takaran AKG tersebut untuk 1 buah pisang ukuran sedang dengan harga sebesar Rp.6000,00 tiap buahnya', 1),
+(UUID(), 1, 'Soup Ayam Jamur', 85, 3, 9.67, 5, 18000, 
+'Terdapat 85 kalori yang terkandung dalam 1 mangkuk soup ayam jamur dengan harga sebesar Rp.18000,00 tiap porsinya', 1),
+(UUID(), 1, 'Nasi Goreng Hongkong', 333, 12.34, 41.7, 12.47, 15000, 
+'Terdapat 333 kalori dalam 1 porsi (1 mangkuk) nasi goreng hongkong dengan harga sebesar Rp.15000,00 tiap porsinya', 1),
+(UUID(), 1, 'Soup Buah', 247, 0, 62.92, 0.77, 5000, 
+'Terdapat 247 kalori dalam 1 porsi (1 mangkuk sedang) soup buah dengan harga sebesar Rp.5000,00 tiap porsinya', 1);
+INSERT INTO tb_food VALUES 
+(UUID(), 1, '(Muscle Building Food) Steamed Teochew Sauce', 310, 11, 46, 6, 40000, 
+'Kreasi sehat dan lezat dari Eat & Fit dengan 
+takaran gizi yang diukur oleh Nutritionist terbaik untuk 
+konsumen yang fokus dalam pembentukan otot. Hidangan ini 
+disajikan lengkap dengan Nasi Merah, Mun Tahu,  Cah Sawi & Wortel.', 1),
+(UUID(), 1, '(Diet Food) Bola Bola Daging Cincang', 288, 19, 0, 26, 50000, 
+'Menu Bola-Bola Daging Cincang, menggunakan daging pilihan 
+yang minim akan lemak dan tinggi akan protein serta zat besi. 
+Disajikan lengkap dengan Bubur Nasi Merah, Tumis Jamur Merang Cincang, dan Cah Sawi Putih Wortel Cincang', 1),
+(UUID(), 1, '(HeartAttack Food) Beef Bulgogi with Shirataki Noodle', 290, 14, 62, 10, 53000, 
+'Kreasi hidangan daging pilihan yang minim akan lemak 
+dan tinggi akan protein serta zat besi. Disajikan dengan shirataki noodle 
+japchae style, spinach namul & kimchi.', 1),
+(UUID(), 1, '(Pregnancy Food) Vegetable Spring Roll Pregnancy', 100, 2.84, 7.44, 1.99, 45000, 
+'Menu ayam goreng mentega yang rendah lemak dan kalori 
+serta mengandung protein. Disajikan lengkap dengan Brown rice, 
+ayam goreng mentega, vegetable spring roll, serta Greenbeans.', 1),
+(UUID(), 1, '(Vegetarian Food) Tongseng Jamur Tiram', 100, 3, 9, 12, 35000, 
+'Kelezatan tongseng jamur tiram dalam paket vegetarian yang 
+disajikan lengkap dengan nasi merah bakar, wok fried greenpeas dan paprika, 
+tumis putren, dan wortel. Sangat direkomendasikan bagi anda yang merupak seorang vegetarian', 1),
+(UUID(), 1, 'Nasi Putih', 204, 0.44, 44.08, 4.2, 3000, 
+'Terdapat 204 kalori dalam 1 porsi (1 mangkuk) nasi yang 
+disajikan dengan harga sebesar Rp.3000,00 untuk tiap porsinya', 1), 
+(UUID(), 1, 'Chicken Cordon Bleu', 304, 10.68, 9, 40, 15000, 
+'Terdapat 304 kalori dalam 1 porsi (1 piring) Chicken Cordon Bleu 
+yang disajikan dengan harga sebesar Rp.5000,00 untuk tiap porsinya', 1),
+(UUID(), 1, 'Beef Teriyaki', 210, 9, 12, 19, 35000, 
+'Terdapat 210 kalori dalam 1 porsi (1 mangkuk) Beef Teriyaki yang 
+disajikan dengan harga sebesar Rp.35.000,00 tiap porsinya', 1),
+(UUID(), 1, 'Kakap Asam Manis', 100, 1.34, 0, 20.51, 30000, 
+'Terdapat 100 kalori dalam 1 porsi (1 piring) Kakap Asam Manis yang 
+disajikan dengan harga sebesar Rp.30.000,00 tiap porsinya', 1),
+(UUID(), 1, 'Puding', 147, 4.07, 24.86, 2.6, 2000, 
+'Terdapat 147 kalori dalam 1 porsi (1 mangkuk) Puding yang 
+disajikan dengan harga sebesar Rp.2.000,00 tiap porsinya', 1),
+(UUID(), 1, 'Capcay', 67, 2.60, 9.67, 1.58, 20000, 
+'Terdapat 67 kalori dalam 1 porsi (1 mangkuk) capcay yang 
+disajikan dengan harga sebesar Rp.20.000,00 tiap porsinya', 1),
+(UUID(), 2, 'Semangka', 60, 0.3, 16, 2, 35000, 
+'Terdapat 60 kalori dalam 2 buah semangka yang 
+disajikan dengan harga sebesar Rp.35.000,00/ 2 buah semangka', 1),
+(UUID(), 1, 'Kerupuk', 15, 0.76, 1.83, 0.22, 2000, 
+'Terdapat 15 kalori dalam 1 kerupuk bundar yang 
+disajikan dengan harga sebesar Rp.2.000,00/ kerupuk', 1),
+(UUID(), 1, 'Air Mineral', 0, 0, 0, 0, 4000, 
+'1 botol air mineral (600 ml) tersedia dengan harga Rp.4000, 00/ botol', 1),
+(UUID(), 1, 'Orange Juice', 110, 0, 27, 0, 5000, 
+'Terdapat 110 kalori dalam 1 botol (250 ml) yang disajikan dengan harga sebesar Rp.5.000/botol', 1),
+(UUID(), 1, 'Udang Goreng Tepung', 287, 14.64, 27.57, 10.58, 25000, 
+'Terdapat kalori sebesar 287 kkal dalam 1 porsi (1 piring) udang goreng tepung', 1),
+(UUID(), 1, 'Soup Ayam Sosis', 75, 2.46, 9.35, 4.05, 20000, 
+'Terdapat 75 kalori yang terkandung dalam 1 mangkuk soup ayam sosis', 1),
+(UUID(), 1, 'Asinan Jakarta', 148, 5.02, 22.97, 4.97, 15000, 
+'Terdapat 148 kalori dalam 1 porsi (1 piring) asinan Jakarta', 1),
+(UUID(), 1, 'Es Kelapa', 113, 2.05, 24.27, 0.21, 4000, 
+'Terdapat 113 kalori dalam Es Kelapa (1 gelas) dengan harga sebesar Rp.4000,00 tiap porsinya', 1),
+(UUID(), 1, 'Kambing Guling', 109, 2.31, 0, 20.6, 1600000, 
+'Takaran AKG untuk 1 porsi (1 piring daging kambing guling)', 1),
+(UUID(), 1, 'Sate Kambing', 216, 14.06, 4.81, 18.93, 10000, 
+'Takaran AKG untuk 1 porsi (100 gr) daging sate kambing dengan harga sebesar Rp.4000,00 tiap porsinya', 1),
+(UUID(), 1, 'Gulai Kambing', 260, 11.53, 7.52, 32.87, 15000, 
+'Takaran AKG untuk 1 porsi (1 mangkuk gulai daging kambing)', 1),
+(UUID(), 1, 'Acar', 12, 0.12, 2.68, 0.4, 3000, 
+'Takaran AKG untuk 1 porsi (1 mangkuk sedang acar) dengan harga sebesar Rp.3000,00 tiap porsinya', 1),
+(UUID(), 1, 'Mie', 219, 3.3, 40.02, 7.22, 6000, 
+'Takaran AKG untuk 1 porsi (1 mangkuk sedang) mie dengan harga sebesar Rp.6000,00 tiap porsinya', 1),
+(UUID(), 1, 'Pisang', 105, 0.39, 26.95, 1.29, 3000, 
+'Takaran AKG tersebut untuk 1 buah pisang ukuran sedang dengan harga sebesar Rp.6000,00 tiap buahnya', 1),
+(UUID(), 1, 'Soup Ayam Jamur', 85, 3, 9.67, 5, 18000, 
+'Terdapat 85 kalori yang terkandung dalam 1 mangkuk soup ayam jamur dengan harga sebesar Rp.18000,00 tiap porsinya', 1),
+(UUID(), 1, 'Nasi Goreng Hongkong', 333, 12.34, 41.7, 12.47, 15000, 
+'Terdapat 333 kalori dalam 1 porsi (1 mangkuk) nasi goreng hongkong dengan harga sebesar Rp.15000,00 tiap porsinya', 1),
+(UUID(), 1, 'Soup Buah', 247, 0, 62.92, 0.77, 5000, 
+'Terdapat 247 kalori dalam 1 porsi (1 mangkuk sedang) soup buah dengan harga sebesar Rp.5000,00 tiap porsinya', 1);

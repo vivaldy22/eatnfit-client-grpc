@@ -82,7 +82,6 @@ func (t *authService) register(w http.ResponseWriter, r *http.Request) {
 		hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(register.UserPassword), bcrypt.DefaultCost)
 		user.UserPassword = string(hashedPassword)
 		user.UserEmail = register.UserEmail
-		user.UserPassword = register.UserPassword
 		user.UserFName = register.UserFName
 		user.UserLName = register.UserLName
 		user.UserGender = register.UserGender

@@ -38,7 +38,7 @@ func NewUserRoute(service authproto.UserCRUDClient, r *mux.Router, admin *mux.Ro
 	usr := r.PathPrefix("/users").Subrouter()
 	usr.Use(middleware.UsrJwtMiddleware.Handler)
 	usr.HandleFunc("/{id}", handler.getByID).Methods(http.MethodGet)
-	usr.HandleFunc("/{id}", handler.update).Methods(http.MethodPut)
+	usr.HandleFunc("/{id}", handler.editUserProfile).Methods(http.MethodPut)
 
 	r.HandleFunc("/wallet/minus/{id}", handler.minusWallet).Methods(http.MethodPost)
 	topup := r.PathPrefix("/topup").Subrouter()
@@ -164,6 +164,39 @@ func (l *userRoute) update(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (l *userRoute) editUserProfile(w http.ResponseWriter, r *http.Request) {
+	var user *authproto.User
+	err := json.NewDecoder(r.Body).Decode(&user)
+
+	if err != nil {
+		vError.WriteError("Decoding json failed", http.StatusExpectationFailed, err, w)
+	} else {
+		id := varMux.GetVarsMux("id", r)
+
+		authID := &authproto.ID{
+			Id: id,
+		}
+		//hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(user.UserPassword), bcrypt.DefaultCost)
+		//user.UserPassword = string(hashedPassword)
+
+		_, err := l.service.EditUserProfile(context.Background(), &authproto.UserUpdateRequest{
+			Id:   authID,
+			User: user,
+		})
+
+		if err != nil {
+			vError.WriteError("Updating data failed!", http.StatusBadRequest, err, w)
+		} else {
+			data, err := l.service.GetByID(context.Background(), authID)
+
+			if err != nil {
+				vError.WriteError("Get User By ID failed!", http.StatusBadRequest, err, w)
+			} else {
+				respJson.WriteJSON(data, w)
+			}
+		}
+	}
+}
 func (l *userRoute) delete(w http.ResponseWriter, r *http.Request) {
 	id := varMux.GetVarsMux("id", r)
 
@@ -227,7 +260,7 @@ func (l *userRoute) topUpHistory(w http.ResponseWriter, r *http.Request) {
 
 func (l *userRoute) minusWallet(w http.ResponseWriter, r *http.Request) {
 	id := varMux.GetVarsMux("id", r)
-	var input *authproto.TopUpInput
+	var input *authproto.CheckoutInput
 	err := json.NewDecoder(r.Body).Decode(&input)
 
 	if err != nil {
