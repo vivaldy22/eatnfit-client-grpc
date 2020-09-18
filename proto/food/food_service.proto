@@ -24,9 +24,10 @@ message FoodList {
 message Packet {
   string packet_id = 1;
   string packet_name = 2;
-  string packet_price = 3;
-  string packet_desc = 4;
-  string packet_status = 5;
+  string packet_portion = 3;
+  string packet_price = 4;
+  string packet_desc = 5;
+  string packet_status = 6;
 }
 
 message PacketAndMenu {
