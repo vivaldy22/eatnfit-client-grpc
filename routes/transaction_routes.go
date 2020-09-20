@@ -33,7 +33,7 @@ func NewTransactionRoute(service foodproto.TransactionCRUDClient, r *mux.Router,
 	usr.Use(middleware.UsrJwtMiddleware.Handler)
 	usr.HandleFunc("", handler.create).Methods(http.MethodPost)
 	usr.HandleFunc("/{id}", handler.getByTransID).Methods(http.MethodGet)
-	usr.HandleFunc("/users/{id}", handler.getByTransID).Methods(http.MethodGet)
+	usr.HandleFunc("/users/{id}", handler.getByUserID).Methods(http.MethodGet)
 }
 
 func (l *transRoute) getAll(w http.ResponseWriter, r *http.Request) {
