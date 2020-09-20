@@ -8,6 +8,9 @@ package food_proto
 
 import (
 	context "context"
+	reflect "reflect"
+	sync "sync"
+
 	proto "github.com/golang/protobuf/proto"
 	empty "github.com/golang/protobuf/ptypes/empty"
 	grpc "google.golang.org/grpc"
@@ -15,8 +18,6 @@ import (
 	status "google.golang.org/grpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
 )
 
 const (
@@ -1411,7 +1412,7 @@ var file_food_service_proto_rawDesc = []byte{
 	0x65, 0x74, 0x49, 0x6e, 0x73, 0x65, 0x72, 0x74, 0x12, 0x30, 0x0a, 0x06, 0x44, 0x65, 0x6c, 0x65,
 	0x74, 0x65, 0x12, 0x0e, 0x2e, 0x66, 0x6f, 0x6f, 0x64, 0x5f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e,
 	0x49, 0x44, 0x1a, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x32, 0xe6, 0x02, 0x0a, 0x0f, 0x54,
+	0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x32, 0xa9, 0x03, 0x0a, 0x0f, 0x54,
 	0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x43, 0x52, 0x55, 0x44, 0x12, 0x3d,
 	0x0a, 0x06, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x12, 0x16, 0x2e, 0x66, 0x6f, 0x6f, 0x64, 0x5f,
 	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x50, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e,
@@ -1423,18 +1424,22 @@ var file_food_service_proto_rawDesc = []byte{
 	0x6f, 0x74, 0x61, 0x6c, 0x12, 0x37, 0x0a, 0x0c, 0x47, 0x65, 0x74, 0x42, 0x79, 0x54, 0x72, 0x61,
 	0x6e, 0x73, 0x49, 0x44, 0x12, 0x0e, 0x2e, 0x66, 0x6f, 0x6f, 0x64, 0x5f, 0x70, 0x72, 0x6f, 0x74,
 	0x6f, 0x2e, 0x49, 0x44, 0x1a, 0x17, 0x2e, 0x66, 0x6f, 0x6f, 0x64, 0x5f, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x2e, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x36, 0x0a,
+	0x6f, 0x2e, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x3a, 0x0a,
 	0x0b, 0x47, 0x65, 0x74, 0x42, 0x79, 0x55, 0x73, 0x65, 0x72, 0x49, 0x44, 0x12, 0x0e, 0x2e, 0x66,
-	0x6f, 0x6f, 0x64, 0x5f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x49, 0x44, 0x1a, 0x17, 0x2e, 0x66,
+	0x6f, 0x6f, 0x64, 0x5f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x49, 0x44, 0x1a, 0x1b, 0x2e, 0x66,
 	0x6f, 0x6f, 0x64, 0x5f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61,
-	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x3a, 0x0a, 0x06, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x12,
-	0x17, 0x2e, 0x66, 0x6f, 0x6f, 0x64, 0x5f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x54, 0x72, 0x61,
-	0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x1a, 0x17, 0x2e, 0x66, 0x6f, 0x6f, 0x64, 0x5f,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f,
-	0x6e, 0x12, 0x30, 0x0a, 0x06, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x12, 0x0e, 0x2e, 0x66, 0x6f,
-	0x6f, 0x64, 0x5f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x49, 0x44, 0x1a, 0x16, 0x2e, 0x67, 0x6f,
-	0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d,
-	0x70, 0x74, 0x79, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x3a, 0x0a, 0x06, 0x43, 0x72, 0x65,
+	0x61, 0x74, 0x65, 0x12, 0x17, 0x2e, 0x66, 0x6f, 0x6f, 0x64, 0x5f, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x2e, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x1a, 0x17, 0x2e, 0x66,
+	0x6f, 0x6f, 0x64, 0x5f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61,
+	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x30, 0x0a, 0x06, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x12,
+	0x0e, 0x2e, 0x66, 0x6f, 0x6f, 0x64, 0x5f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x49, 0x44, 0x1a,
+	0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75,
+	0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x3d, 0x0a, 0x12, 0x43, 0x6f, 0x6e, 0x66, 0x69,
+	0x72, 0x6d, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x0e, 0x2e,
+	0x66, 0x6f, 0x6f, 0x64, 0x5f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x49, 0x44, 0x1a, 0x17, 0x2e,
+	0x66, 0x6f, 0x6f, 0x64, 0x5f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x54, 0x72, 0x61, 0x6e, 0x73,
+	0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1502,26 +1507,28 @@ var file_food_service_proto_depIdxs = []int32{
 	12, // 27: food_proto.TransactionCRUD.GetByUserID:input_type -> food_proto.ID
 	4,  // 28: food_proto.TransactionCRUD.Create:input_type -> food_proto.Transaction
 	12, // 29: food_proto.TransactionCRUD.Delete:input_type -> food_proto.ID
-	1,  // 30: food_proto.FoodCRUD.GetAll:output_type -> food_proto.FoodList
-	17, // 31: food_proto.FoodCRUD.GetTotal:output_type -> food_proto.Total
-	0,  // 32: food_proto.FoodCRUD.GetByID:output_type -> food_proto.Food
-	0,  // 33: food_proto.FoodCRUD.Create:output_type -> food_proto.Food
-	0,  // 34: food_proto.FoodCRUD.Update:output_type -> food_proto.Food
-	18, // 35: food_proto.FoodCRUD.Delete:output_type -> google.protobuf.Empty
-	9,  // 36: food_proto.PacketCRUD.GetAll:output_type -> food_proto.PacketList
-	17, // 37: food_proto.PacketCRUD.GetTotal:output_type -> food_proto.Total
-	8,  // 38: food_proto.PacketCRUD.GetByID:output_type -> food_proto.DetailPacket
-	11, // 39: food_proto.PacketCRUD.Create:output_type -> food_proto.DetailPacketInsert
-	11, // 40: food_proto.PacketCRUD.Update:output_type -> food_proto.DetailPacketInsert
-	18, // 41: food_proto.PacketCRUD.Delete:output_type -> google.protobuf.Empty
-	6,  // 42: food_proto.TransactionCRUD.GetAll:output_type -> food_proto.TransactionList
-	17, // 43: food_proto.TransactionCRUD.GetTotal:output_type -> food_proto.Total
-	4,  // 44: food_proto.TransactionCRUD.GetByTransID:output_type -> food_proto.Transaction
-	4,  // 45: food_proto.TransactionCRUD.GetByUserID:output_type -> food_proto.Transaction
-	4,  // 46: food_proto.TransactionCRUD.Create:output_type -> food_proto.Transaction
-	18, // 47: food_proto.TransactionCRUD.Delete:output_type -> google.protobuf.Empty
-	30, // [30:48] is the sub-list for method output_type
-	12, // [12:30] is the sub-list for method input_type
+	12, // 30: food_proto.TransactionCRUD.ConfirmTransaction:input_type -> food_proto.ID
+	1,  // 31: food_proto.FoodCRUD.GetAll:output_type -> food_proto.FoodList
+	17, // 32: food_proto.FoodCRUD.GetTotal:output_type -> food_proto.Total
+	0,  // 33: food_proto.FoodCRUD.GetByID:output_type -> food_proto.Food
+	0,  // 34: food_proto.FoodCRUD.Create:output_type -> food_proto.Food
+	0,  // 35: food_proto.FoodCRUD.Update:output_type -> food_proto.Food
+	18, // 36: food_proto.FoodCRUD.Delete:output_type -> google.protobuf.Empty
+	9,  // 37: food_proto.PacketCRUD.GetAll:output_type -> food_proto.PacketList
+	17, // 38: food_proto.PacketCRUD.GetTotal:output_type -> food_proto.Total
+	8,  // 39: food_proto.PacketCRUD.GetByID:output_type -> food_proto.DetailPacket
+	11, // 40: food_proto.PacketCRUD.Create:output_type -> food_proto.DetailPacketInsert
+	11, // 41: food_proto.PacketCRUD.Update:output_type -> food_proto.DetailPacketInsert
+	18, // 42: food_proto.PacketCRUD.Delete:output_type -> google.protobuf.Empty
+	6,  // 43: food_proto.TransactionCRUD.GetAll:output_type -> food_proto.TransactionList
+	17, // 44: food_proto.TransactionCRUD.GetTotal:output_type -> food_proto.Total
+	4,  // 45: food_proto.TransactionCRUD.GetByTransID:output_type -> food_proto.Transaction
+	6,  // 46: food_proto.TransactionCRUD.GetByUserID:output_type -> food_proto.TransactionList
+	4,  // 47: food_proto.TransactionCRUD.Create:output_type -> food_proto.Transaction
+	18, // 48: food_proto.TransactionCRUD.Delete:output_type -> google.protobuf.Empty
+	4,  // 49: food_proto.TransactionCRUD.ConfirmTransaction:output_type -> food_proto.Transaction
+	31, // [31:50] is the sub-list for method output_type
+	12, // [12:31] is the sub-list for method input_type
 	12, // [12:12] is the sub-list for extension type_name
 	12, // [12:12] is the sub-list for extension extendee
 	0,  // [0:12] is the sub-list for field type_name
@@ -2289,9 +2296,10 @@ type TransactionCRUDClient interface {
 	GetAll(ctx context.Context, in *Pagination, opts ...grpc.CallOption) (*TransactionList, error)
 	GetTotal(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*Total, error)
 	GetByTransID(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Transaction, error)
-	GetByUserID(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Transaction, error)
+	GetByUserID(ctx context.Context, in *ID, opts ...grpc.CallOption) (*TransactionList, error)
 	Create(ctx context.Context, in *Transaction, opts ...grpc.CallOption) (*Transaction, error)
 	Delete(ctx context.Context, in *ID, opts ...grpc.CallOption) (*empty.Empty, error)
+	ConfirmTransaction(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Transaction, error)
 }
 
 type transactionCRUDClient struct {
@@ -2329,8 +2337,8 @@ func (c *transactionCRUDClient) GetByTransID(ctx context.Context, in *ID, opts .
 	return out, nil
 }
 
-func (c *transactionCRUDClient) GetByUserID(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Transaction, error) {
-	out := new(Transaction)
+func (c *transactionCRUDClient) GetByUserID(ctx context.Context, in *ID, opts ...grpc.CallOption) (*TransactionList, error) {
+	out := new(TransactionList)
 	err := c.cc.Invoke(ctx, "/food_proto.TransactionCRUD/GetByUserID", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -2356,14 +2364,24 @@ func (c *transactionCRUDClient) Delete(ctx context.Context, in *ID, opts ...grpc
 	return out, nil
 }
 
+func (c *transactionCRUDClient) ConfirmTransaction(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Transaction, error) {
+	out := new(Transaction)
+	err := c.cc.Invoke(ctx, "/food_proto.TransactionCRUD/ConfirmTransaction", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TransactionCRUDServer is the server API for TransactionCRUD service.
 type TransactionCRUDServer interface {
 	GetAll(context.Context, *Pagination) (*TransactionList, error)
 	GetTotal(context.Context, *empty.Empty) (*Total, error)
 	GetByTransID(context.Context, *ID) (*Transaction, error)
-	GetByUserID(context.Context, *ID) (*Transaction, error)
+	GetByUserID(context.Context, *ID) (*TransactionList, error)
 	Create(context.Context, *Transaction) (*Transaction, error)
 	Delete(context.Context, *ID) (*empty.Empty, error)
+	ConfirmTransaction(context.Context, *ID) (*Transaction, error)
 }
 
 // UnimplementedTransactionCRUDServer can be embedded to have forward compatible implementations.
@@ -2379,7 +2397,7 @@ func (*UnimplementedTransactionCRUDServer) GetTotal(context.Context, *empty.Empt
 func (*UnimplementedTransactionCRUDServer) GetByTransID(context.Context, *ID) (*Transaction, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetByTransID not implemented")
 }
-func (*UnimplementedTransactionCRUDServer) GetByUserID(context.Context, *ID) (*Transaction, error) {
+func (*UnimplementedTransactionCRUDServer) GetByUserID(context.Context, *ID) (*TransactionList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetByUserID not implemented")
 }
 func (*UnimplementedTransactionCRUDServer) Create(context.Context, *Transaction) (*Transaction, error) {
@@ -2387,6 +2405,9 @@ func (*UnimplementedTransactionCRUDServer) Create(context.Context, *Transaction)
 }
 func (*UnimplementedTransactionCRUDServer) Delete(context.Context, *ID) (*empty.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (*UnimplementedTransactionCRUDServer) ConfirmTransaction(context.Context, *ID) (*Transaction, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ConfirmTransaction not implemented")
 }
 
 func RegisterTransactionCRUDServer(s *grpc.Server, srv TransactionCRUDServer) {
@@ -2501,6 +2522,24 @@ func _TransactionCRUD_Delete_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TransactionCRUD_ConfirmTransaction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TransactionCRUDServer).ConfirmTransaction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/food_proto.TransactionCRUD/ConfirmTransaction",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TransactionCRUDServer).ConfirmTransaction(ctx, req.(*ID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _TransactionCRUD_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "food_proto.TransactionCRUD",
 	HandlerType: (*TransactionCRUDServer)(nil),
@@ -2528,6 +2567,10 @@ var _TransactionCRUD_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Delete",
 			Handler:    _TransactionCRUD_Delete_Handler,
+		},
+		{
+			MethodName: "ConfirmTransaction",
+			Handler:    _TransactionCRUD_ConfirmTransaction_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -26,7 +26,7 @@ func NewTransactionRoute(service foodproto.TransactionCRUDClient, r *mux.Router,
 	adm.HandleFunc("", handler.create).Methods(http.MethodPost)
 	adm.HandleFunc("/total", handler.getTotal).Methods(http.MethodGet)
 	adm.HandleFunc("/{id}", handler.getByTransID).Methods(http.MethodGet)
-	adm.HandleFunc("/users/{id}", handler.getByTransID).Methods(http.MethodGet)
+	adm.HandleFunc("/users/{id}", handler.getByUserID).Methods(http.MethodGet)
 	adm.HandleFunc("/{id}", handler.delete).Methods(http.MethodDelete)
 
 	usr := r.PathPrefix("/transactions").Subrouter()
@@ -34,6 +34,7 @@ func NewTransactionRoute(service foodproto.TransactionCRUDClient, r *mux.Router,
 	usr.HandleFunc("", handler.create).Methods(http.MethodPost)
 	usr.HandleFunc("/{id}", handler.getByTransID).Methods(http.MethodGet)
 	usr.HandleFunc("/users/{id}", handler.getByUserID).Methods(http.MethodGet)
+	usr.HandleFunc("/confirm/{id}", handler.confirmTransaction).Methods(http.MethodPost)
 }
 
 func (l *transRoute) getAll(w http.ResponseWriter, r *http.Request) {
@@ -117,7 +118,7 @@ func (l *transRoute) getByUserID(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		vError.WriteError("Get Trans By User ID failed!", http.StatusBadRequest, err, w)
 	} else {
-		respJson.WriteJSON(data, w)
+		respJson.WriteJSON(data.List, w)
 	}
 }
 
@@ -137,6 +138,28 @@ func (l *transRoute) delete(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			vError.WriteError("Delete Transaction failed!", http.StatusBadRequest, err, w)
 		} else {
+			respJson.WriteJSON(data, w)
+		}
+	}
+}
+
+func (l *transRoute) confirmTransaction(w http.ResponseWriter, r *http.Request) {
+	id := varMux.GetVarsMux("id", r)
+
+	authID := &foodproto.ID{
+		Id: id,
+	}
+	_, err := l.service.GetByTransID(context.Background(), authID)
+
+	if err != nil {
+		vError.WriteError("Get By Trans ID failed!", http.StatusBadRequest, err, w)
+	} else {
+		_, err = l.service.ConfirmTransaction(context.Background(), authID)
+
+		if err != nil {
+			vError.WriteError("Confirm Transaction failed!", http.StatusBadRequest, err, w)
+		} else {
+			data, _ := l.service.GetByTransID(context.Background(), authID)
 			respJson.WriteJSON(data, w)
 		}
 	}

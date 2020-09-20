@@ -141,7 +141,8 @@ service TransactionCRUD {
   rpc GetAll(Pagination) returns (TransactionList);
   rpc GetTotal(google.protobuf.Empty) returns (Total);
   rpc GetByTransID(ID) returns (Transaction);
-  rpc GetByUserID(ID) returns (Transaction);
+  rpc GetByUserID(ID) returns (TransactionList);
   rpc Create(Transaction) returns (Transaction);
   rpc Delete(ID) returns (google.protobuf.Empty);
+  rpc ConfirmTransaction(ID) returns (Transaction);
 }
