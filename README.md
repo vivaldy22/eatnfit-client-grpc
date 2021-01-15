@@ -12,7 +12,6 @@
  > "user_f_name":  "f name",<br>
  > "user_l_name":  "l name",<br>
  > "user_gender":  "1",<br>
- > "user_photo":  "admin.jpg",<br>
  > "user_balance":  "10",<br>
  > "user_level":  "1"<br>
  > }
@@ -42,7 +41,6 @@
  > "user_f_name":  "f name",<br>
  > "user_l_name":  "l name",<br>
  > "user_gender":  "1",<br>
- > "user_photo":  "admin.jpg",<br>
  > "user_balance":  "10",<br>
  > "user_level":  "1"<br>
  > }
@@ -53,7 +51,6 @@
  > "user_f_name":  "f name",<br>
  > "user_l_name":  "l name",<br>
  > "user_gender":  "1",<br>
- > "user_photo":  "admin.jpg",<br>
  > "user_balance":  "10",<br>
  > "user_level":  "1"<br>
  > }
